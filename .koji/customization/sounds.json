@@ -1,21 +1,56 @@
 {
-    "sounds": {
-      "backgroundMusic": "https://objects.koji-cdn.com/63bc2fb0-0c42-4acb-bee8-a060e9286a95/backgroundMusicSpace.mp3"
-    },
-    "@@editor": [
-      {
-        "key": "sounds",
-        "name": "Sounds",
-        "icon": "🔊️",
-        "source": "sounds.json",
-        "fields": [
-          {
-            "key": "backgroundMusic",
-            "name": "Background Music",
-            "description": "Music to loop in background",
-            "type": "sound"
-          }
-        ]
-      }
-    ]
-  }
+  "sounds": {
+    "backgroundMusic": "https://objects.koji-cdn.com/dede4ffa-95b4-4189-978b-58a22c9ed52f/music.mp3",
+    "pop1": "https://objects.koji-cdn.com/dede4ffa-95b4-4189-978b-58a22c9ed52f/pop1.ogg",
+    "pop2": "https://objects.koji-cdn.com/dede4ffa-95b4-4189-978b-58a22c9ed52f/pop2.ogg",
+    "pop3": "https://objects.koji-cdn.com/dede4ffa-95b4-4189-978b-58a22c9ed52f/pop3.ogg",
+    "explosion": "https://objects.koji-cdn.com/dede4ffa-95b4-4189-978b-58a22c9ed52f/explosion.wav",
+    "freeze": "https://objects.koji-cdn.com/dede4ffa-95b4-4189-978b-58a22c9ed52f/freeze.wav"
+  },
+  "@@editor": [
+    {
+      "key": "sounds",
+      "name": "Sounds",
+      "icon": "🎵",
+      "source": "sounds.json",
+      "fields": [
+        {
+          "key": "backgroundMusic",
+          "name": "Background Music",
+          "description": "Music to loop in background",
+          "type": "sound"
+        },
+        {
+          "key": "pop1",
+          "name": "Bubble Pop 1",
+          "description": "Pop Sound 1",
+          "type": "sound"
+        },
+        {
+          "key": "pop2",
+          "name": "Bubble Pop 2",
+          "description": "Pop Sound 2",
+          "type": "sound"
+        },
+        {
+          "key": "pop3",
+          "name": "Bubble Pop 3",
+          "description": "Pop Sound 3",
+          "type": "sound"
+        },
+        {
+          "key": "explosion",
+          "name": "Bubble Explosion",
+          "description": "When you pop a bomb bubble",
+          "type": "sound"
+        },
+        {
+          "key": "freeze",
+          "name": "Bubble Freeze",
+          "description": "When you pop an ice bubble",
+          "type": "sound"
+        }
+      ]
+    }
+  ]
+}

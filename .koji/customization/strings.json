@@ -1,18 +1,130 @@
 {
   "strings": {
-    "content": "Koji P5 Scaffold"
+    "fontFamily": "https://fonts.googleapis.com/css?family=Baloo",
+    "title": "Pop The Bubble",
+    "instructions1": "Tap on bubbles as they appear to pop them",
+    "instructions2": "Don't let any bubbles escape!",
+    "instructions3": "",
+    "gameOverText": "GAME OVER",
+    "highScoreText": "High Score:",
+    "playButtonText": "POP SOME BUBBLES!",
+    "scoreText": "Score:",
+    "highscoreText": "High Score:",
+    "highscoreGainedText": "New High Score!",
+    "health": "3",
+    "lives": "6",
+    "freezeText": "FREEZE",
+    "scoreGain": "1",
+    "startingBubbles": "4",
+    "spawnFrequency": "20",
+    "bombFrequency": "1",
+    "iceFrequency": "1",
+    "bombText": "BOOM!"
   },
   "@@editor": [
     {
       "key": "strings",
-      "name": "Strings",
-      "icon": "📚",
+      "name": "Game Settings",
+      "icon": "💡",
       "source": "strings.json",
       "fields": [
         {
-          "key": "content",
-          "name": "Page Content",
-          "description": "The text that is displayed on the page",
+          "key": "title",
+          "name": "Game Title",
+          "description": "The title that is displayed in the start menu",
+          "type": "text"
+        },
+        {
+          "key": "instructions1",
+          "name": "Game Instructions 1",
+          "type": "text"
+        },
+        {
+          "key": "instructions2",
+          "name": "Game Instructions 2",
+          "type": "text"
+        },
+        {
+          "key": "instructions3",
+          "name": "Game Instructions 3",
+          "type": "text"
+        },
+        {
+          "key": "fontFamily",
+          "name": "Font Family",
+          "description": "Google fonts link to font to use in the game",
+          "type": "text"
+        },
+        {
+          "key": "playButtonText",
+          "name": "Play Button Text",
+          "description": "Label on the Play Button",
+          "type": "text"
+        },
+        {
+          "key": "scoreText",
+          "name": "Score Text",
+          "description": "Default: 'Score:'",
+          "type": "text"
+        },
+        {
+          "key": "highscoreText",
+          "name": "High Score Text",
+          "description": "Default: 'High Score:'",
+          "type": "text"
+        },
+        {
+          "key": "highscoreGainedText",
+          "name": "High Score Gained Text",
+          "description": "When you get a new high score",
+          "type": "text"
+        },
+        {
+          "key": "freezeText",
+          "name": "Freeze Text",
+          "description": "Splash text when you pop a freezing bubble",
+          "type": "text"
+        },
+        {
+          "key": "bombText",
+          "name": "Bomb Text",
+          "description": "Splash text when you pop a bomb",
+          "type": "text"
+        },
+        {
+          "key": "lives",
+          "name": "Max Lives",
+          "description": "How many lives you initially have (Integer)",
+          "type": "text"
+        },
+        {
+          "key": "scoreGain",
+          "name": "Score Gain",
+          "description": "How much score you get for each bubble popped (Integer)",
+          "type": "text"
+        },
+        {
+          "key": "startingBubbles",
+          "name": "Starting Bubbles",
+          "description": "How many bubbles spawn at the beginning (Integer)",
+          "type": "text"
+        },
+        {
+          "key": "spawnFrequency",
+          "name": "Bubble Frequency",
+          "description": "How frequently the bubbles spawn (Integer)",
+          "type": "text"
+        },
+        {
+          "key": "bombFrequency",
+          "name": "Bomb Frequency",
+          "description": "How frequently the bombs spawn (Integer)",
+          "type": "text"
+        },
+        {
+          "key": "iceFrequency",
+          "name": "Ice Frequency",
+          "description": "How frequently the ice spawns (Integer)",
           "type": "text"
         }
       ]
