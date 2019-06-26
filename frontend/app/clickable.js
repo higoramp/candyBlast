@@ -4,8 +4,6 @@ https://github.com/Lartu/p5.clickable
 
 */
 
-
-
 //Determines if the mouse was pressed on the previous frame
 var cl_mouseWasPressed = false;
 //Last hovered button

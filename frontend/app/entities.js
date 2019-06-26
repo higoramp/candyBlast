@@ -36,7 +36,6 @@ class Entity {
         this.scale = createVector(1, 1);
     }
 
-
     render() {
         let size = objSize * this.sizeMod;
 
@@ -64,32 +63,26 @@ class Entity {
 class Bubble extends Entity {
     constructor(x, y, type) {
         super(x, y);
-
         this.type = type;
-
         this.img = imgBubble[type];
         this.rotation = random() * Math.PI;
-
         this.sizeMod = random(2, 3);
-
+        this.sizeModX = this.sizeMod;
+        this.sizeModY = this.sizeMod;
         this.maxVelocity = createVector(0, random(minVelocityY, maxVelocityY));
         this.velocity = createVector(0, 0);
-
         this.popped = false;
         this.outOfScreen = false;
-
         this.animationTimer = 0;
-
         this.frozen = false;
-
     }
 
     update() {
-
         this.animationTimer += 1 / frameRate();
 
         if (!this.frozen) {
-            this.sizeMod = Sinusoid(this.sizeMod, 4, 0.01, this.animationTimer);
+            this.sizeModX = Sinusoid(this.sizeModX, 4, 0.01, this.animationTimer);
+            this.sizeModY = Cosine(this.sizeModY, 4, 0.01, this.animationTimer);
             this.velocity.y = Smooth(this.velocity.y, -this.maxVelocity.y, 12);
         } else {
             this.velocity.y = Smooth(this.velocity.y, 0, 12);
@@ -105,7 +98,8 @@ class Bubble extends Entity {
 
     //override
     render() {
-        let size = objSize * this.sizeMod;
+        let sizeX = objSize * this.sizeModX;
+        let sizeY = objSize * this.sizeModY;
         this.img = imgBubble[this.type];
         if (this.frozen) {
             this.img = imgBubbleFrozen;
@@ -115,7 +109,7 @@ class Bubble extends Entity {
         translate(this.pos.x, this.pos.y);
         rotate(this.rotation);
         scale(this.scale.x, this.scale.y);
-        image(this.img, -size / 2, -size / 2, size, size);
+        image(this.img, -sizeX / 2, -sizeY / 2, sizeX, sizeY);
         pop();
     }
 
@@ -131,23 +125,17 @@ class Bubble extends Entity {
     }
 }
 
+//Small bubbles that emerge when you pop a big one
 class BubbleParticle extends Bubble {
     constructor(x, y) {
         super(x, y);
-
         this.img = imgBubbleParticle;
         this.rotation = random() * Math.PI;
-
         this.maxSize = random(0.5, 1);
-
         this.sizeMod = 0.1;
-
         this.maxVelocity = createVector(0, random(minVelocityY, maxVelocityY) * 3);
         this.velocity = createVector(0, -minVelocityY / 2);
-
         this.timer = 0.5;
-
-
     }
 
     update() {
@@ -160,7 +148,6 @@ class BubbleParticle extends Bubble {
         } else {
             this.sizeMod = Smooth(this.sizeMod, 0.1, 8);
         }
-
 
         this.velocity.x = Smooth(this.velocity.x, 0, 4);
 
@@ -180,25 +167,17 @@ class BubbleParticle extends Bubble {
         image(this.img, -size / 2, -size / 2, size, size);
         pop();
     }
-
-
 }
 
-
+//A quick effect that spawns for a moment after popping a bubble
 class PopEffect extends Entity {
     constructor(x, y, size) {
         super(x, y);
-
         this.img = imgPopEffect;
         this.rotation = random() * Math.PI;
-
         this.maxSize = size;
-
         this.sizeMod = 0.1;
-
         this.timer = 0.15;
-
-
     }
 
     update() {
@@ -210,28 +189,17 @@ class PopEffect extends Entity {
         if (this.timer <= 0) {
             this.removable = true;
         }
-
     }
-
-
 }
 
-
+//Same as pop effect but an explosion instead
 class Explosion extends PopEffect {
     constructor(x, y, size) {
         super(x, y);
-
         this.img = imgExplosion;
         this.rotation = random() * Math.PI;
-
         this.maxSize = size * 3;
-
         this.sizeMod = 0.1;
-
         this.timer = 0.15;
-
-
     }
-
-
 }

@@ -1,6 +1,8 @@
 # Pop The Bubble
 
+Pop The Bubble is a simple and relaxing casual game made with P5.js.
 
+Tap on the bubbles to pop them, and don't let any escape!
 
 
 ## Getting Started
@@ -10,7 +12,7 @@ Feel free to modify anything, I've provided comments which should be helpful. Tr
 
 ## About The Game
 
-Controls: How is this game played?
+Controls: Tap/Click on the bubbles to pop them.
 
 # Customizations
 
@@ -25,19 +27,34 @@ Things that can be customized:
 - Instructions
 - Play Button
 - Score and High Score
-
+- Freeze Text 
+- Bomb Text
 
 ## Images
 - Background (optional)
 - Life Icon
+- Bubble
+- Small Bubble
+- Ice Bubble
+- Frozen Bubble
+- Exploding Bubble
 
 ## Sounds
 - Music
+- Pop Sound (3 variations)
+- Freeze Sound
+- Explode Sound
+- Lose life sound
 
 ## Game Settings
 - Any Google Font can be used
 - All game text
 - Lives
+- Starting bubbles
+- Bubble frequency
+- Bomb frequency
+- Ice bubble frequency
+- Score gain
 
 ## NOTES
 

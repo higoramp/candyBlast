@@ -190,3 +190,11 @@ function Sinusoid(value, frequency, amplitude, timer) {
 }
 
 
+
+//===COsine function, used for oscillations
+function Cosine(value, frequency, amplitude, timer) {
+
+    let val = value + (amplitude * Math.cos(timer * frequency));
+
+    return val;
+}

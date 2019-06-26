@@ -47,6 +47,7 @@ let sndMusic;
 let sndPop = [];
 let sndExplosion;
 let sndFreeze;
+let sndLoseLife;
 
 let soundEnabled = true;
 let canMute = true;
@@ -105,6 +106,7 @@ function preload() {
     sndPop[2] = loadSound(Koji.config.sounds.pop3);
     sndExplosion = loadSound(Koji.config.sounds.explosion);
     sndFreeze = loadSound(Koji.config.sounds.freeze);
+    sndLoseLife = loadSound(Koji.config.sounds.loseLife);
 
     //===Load settings from Game Settings
     startingLives = parseInt(Koji.config.strings.lives);
@@ -302,6 +304,7 @@ function cleanup() {
         }
     }
 
+    //Check to see if a bubble is popped
     for (let i = 0; i < bubbles.length; i++) {
         if (bubbles[i].popped) {
 
@@ -313,6 +316,7 @@ function cleanup() {
                 bubbleParticles.push(particle);
             }
 
+            //Explosion pop
             if (bubbles[i].type == 1) {
                 popBubbles();
                 let popEffect = new Explosion(bubbles[i].pos.x, bubbles[i].pos.y, bubbles[i].sizeMod);
@@ -320,6 +324,7 @@ function cleanup() {
                 sndExplosion.setVolume(0.5);
                 PlaySound(sndExplosion);
             } else {
+                //Freeze pop
                 if (bubbles[i].type == 2) {
                     freezeBubbles();
                     PlaySound(sndFreeze);
@@ -328,14 +333,11 @@ function cleanup() {
                 }
                 let popEffect = new PopEffect(bubbles[i].pos.x, bubbles[i].pos.y, bubbles[i].sizeMod);
                 popEffects.push(popEffect);
-
-
             }
 
             score += scoreGain;
 
             checkHighscore();
-
 
             bubbles[i].removable = true;
         }
@@ -366,10 +368,6 @@ function cleanup() {
 
 function touchStarted() {
 
-    if (gameOver || gameBeginning) {
-
-    }
-
     if (soundButton.checkClick()) {
         toggleSound();
         return;
@@ -377,7 +375,6 @@ function touchStarted() {
 
     if (!gameOver && !gameBeginning) {
         //Ingame
-        touching = true;
 
         for (let i = 0; i < bubbles.length; i++) {
             if (bubbles[i].checkClick()) {
@@ -385,23 +382,6 @@ function touchStarted() {
                 break;
             }
         }
-
-    }
-}
-
-function touchEnded() {
-    touching = false;
-}
-
-function keyPressed() {
-    if (!gameOver && !gameBeginning) {
-
-    }
-}
-
-function keyReleased() {
-    if (!gameOver && !gameBeginning) {
-
     }
 }
 
@@ -423,7 +403,6 @@ function init() {
     for (let i = 0; i < startingBubbles; i++) {
         spawnBubble(0);
     }
-
 }
 
 function checkSpawn() {
@@ -460,37 +439,32 @@ function spawnBubble(type) {
     bubbles.push(new Bubble(pos.x, pos.y, type));
 }
 
+//Freeze all bubbles
 function freezeBubbles() {
     for (let i = 0; i < bubbles.length; i++) {
         if (bubbles[i].pos.y > 0 && bubbles[i].pos.y < height && bubbles[i].type == 0) {
             bubbles[i].frozen = true;
         }
     }
-
     floatingTexts.push(new FloatingText(width / 2, height / 2 - objSize * 3, Koji.config.strings.freezeText, Koji.config.colors.freezeColor, objSize * 3));
-
 }
 
+//Pop all bubbles
 function popBubbles() {
     for (let i = 0; i < bubbles.length; i++) {
-
         bubbles[i].popped = true;
-
     }
-
     floatingTexts.push(new FloatingText(width / 2, height / 2 - objSize * 7, Koji.config.strings.bombText, Koji.config.colors.bombTextColor, objSize * 3));
 }
 
 //===Call this when a lose life event should trigger
 function loseLife() {
-
     lives--;
+    PlaySound(sndLoseLife);
     if (lives <= 0) {
         gameOver = true;
-
         checkHighscore();
     }
-
 }
 
 //===Floating text used for score
