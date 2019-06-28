@@ -368,6 +368,12 @@ function cleanup() {
 
 function touchStarted() {
 
+    
+    //===This is required to fix a problem where the music sometimes doesn't start on mobile
+    if (getAudioContext().state !== 'running') {
+        getAudioContext().resume();
+    }
+
     if (soundButton.checkClick()) {
         toggleSound();
         return;

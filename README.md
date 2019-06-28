@@ -16,8 +16,6 @@ Controls: Tap/Click on the bubbles to pop them.
 
 # Customizations
 
-Include tips for the best types of assets in each customization section.
-
 Things that can be customized:
 
 ## Colors
