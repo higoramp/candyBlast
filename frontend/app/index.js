@@ -99,6 +99,8 @@ function preload() {
     soundImage = loadImage(Koji.config.images.soundImage);
     muteImage = loadImage(Koji.config.images.muteImage);
 
+    soundFormats('wav', 'mp3');
+
     //===Load Sounds
     sndMusic = loadSound(Koji.config.sounds.backgroundMusic);
     sndPop[0] = loadSound(Koji.config.sounds.pop1);
