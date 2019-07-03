@@ -322,14 +322,16 @@ function cleanup() {
                 let popEffect = new Explosion(bubbles[i].pos.x, bubbles[i].pos.y, bubbles[i].sizeMod);
                 popEffects.push(popEffect);
                 sndExplosion.setVolume(0.5);
-                PlaySound(sndExplosion);
+                sndExplosion.play();
             } else {
                 //Freeze pop
                 if (bubbles[i].type == 2) {
                     freezeBubbles();
-                    PlaySound(sndFreeze);
+
+                    sndFreeze.play();
                 } else {
-                    PlaySound(sndPop[floor(random() * sndPop.length)]);
+
+                    sndPop[floor(random() * sndPop.length)].play();
                 }
                 let popEffect = new PopEffect(bubbles[i].pos.x, bubbles[i].pos.y, bubbles[i].sizeMod);
                 popEffects.push(popEffect);
@@ -368,13 +370,15 @@ function cleanup() {
 
 function touchStarted() {
 
-    
+
     //===This is required to fix a problem where the music sometimes doesn't start on mobile
-    if (getAudioContext().state !== 'running') {
-        getAudioContext().resume();
+    if (soundEnabled) {
+        if (getAudioContext().state !== 'running') {
+            getAudioContext().resume();
+        }
     }
 
-    if (soundButton.checkClick()) {
+    if (soundButton && soundButton.checkClick()) {
         toggleSound();
         return;
     }
@@ -466,7 +470,7 @@ function popBubbles() {
 //===Call this when a lose life event should trigger
 function loseLife() {
     lives--;
-    PlaySound(sndLoseLife);
+    sndLoseLife.play();
     if (lives <= 0) {
         gameOver = true;
         checkHighscore();

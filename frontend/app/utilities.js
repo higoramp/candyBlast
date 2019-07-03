@@ -11,7 +11,7 @@ function checkHighscore() {
     }
 }
 
-
+/*
 //===Used for playing any sound
 function PlaySound(audio, loop) {
     if (soundEnabled) {
@@ -19,6 +19,7 @@ function PlaySound(audio, loop) {
         audio.play();
     }
 }
+*/
 
 function playMusic() {
     if (sndMusic) {
@@ -30,17 +31,14 @@ function playMusic() {
 }
 
 function disableSound() {
-    if (sndMusic) {
-        sndMusic.pause();
-
-    }
+    getAudioContext().suspend();
 
     soundEnabled = false;
 }
 
 function enableSound() {
     soundEnabled = true;
-    playMusic();
+    getAudioContext().resume();
 }
 
 //Call this function on sound button click
