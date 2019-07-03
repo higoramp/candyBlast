@@ -373,13 +373,6 @@ function cleanup() {
 function touchStarted() {
 
 
-    //===This is required to fix a problem where the music sometimes doesn't start on mobile
-    if (soundEnabled) {
-        if (getAudioContext().state !== 'running') {
-            getAudioContext().resume();
-        }
-    }
-
     if (soundButton && soundButton.checkClick()) {
         toggleSound();
         return;
@@ -395,6 +388,17 @@ function touchStarted() {
             }
         }
     }
+}
+
+function touchEnded() {
+
+    //===This is required to fix a problem where the music sometimes doesn't start on mobile
+    if (soundEnabled) {
+        if (getAudioContext().state !== 'running') {
+            getAudioContext().resume();
+        }
+    }
+
 }
 
 //===Call this every time you want to start or reset the game
