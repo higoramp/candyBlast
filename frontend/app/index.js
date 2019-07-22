@@ -102,13 +102,13 @@ function preload() {
     soundFormats('wav', 'mp3');
 
     //===Load Sounds
-    sndMusic = loadSound(Koji.config.sounds.backgroundMusic);
-    sndPop[0] = loadSound(Koji.config.sounds.pop1);
-    sndPop[1] = loadSound(Koji.config.sounds.pop2);
-    sndPop[2] = loadSound(Koji.config.sounds.pop3);
-    sndExplosion = loadSound(Koji.config.sounds.explosion);
-    sndFreeze = loadSound(Koji.config.sounds.freeze);
-    sndLoseLife = loadSound(Koji.config.sounds.loseLife);
+    if (Koji.config.sounds.backgroundMusic) sndMusic = loadSound(Koji.config.sounds.backgroundMusic);
+    if (Koji.config.sounds.pop1) sndPop[0] = loadSound(Koji.config.sounds.pop1);
+    if (Koji.config.sounds.pop2) sndPop[1] = loadSound(Koji.config.sounds.pop2);
+    if (Koji.config.sounds.pop3) sndPop[2] = loadSound(Koji.config.sounds.pop3);
+    if (Koji.config.sounds.explosion) sndExplosion = loadSound(Koji.config.sounds.explosion);
+    if (Koji.config.sounds.freeze) sndFreeze = loadSound(Koji.config.sounds.freeze);
+    if (Koji.config.sounds.loseLife) sndLoseLife = loadSound(Koji.config.sounds.loseLife);
 
     //===Load settings from Game Settings
     startingLives = parseInt(Koji.config.strings.lives);
@@ -323,17 +323,21 @@ function cleanup() {
                 popBubbles();
                 let popEffect = new Explosion(bubbles[i].pos.x, bubbles[i].pos.y, bubbles[i].sizeMod);
                 popEffects.push(popEffect);
-                sndExplosion.setVolume(0.5);
-                sndExplosion.play();
+
+                if (sndExplosion) {
+                    sndExplosion.setVolume(0.5);
+                    sndExplosion.play();
+                }
             } else {
                 //Freeze pop
                 if (bubbles[i].type == 2) {
                     freezeBubbles();
 
-                    sndFreeze.play();
+                    if (sndFreeze) sndFreeze.play();
                 } else {
+                    let id = floor(random() * sndPop.length);
 
-                    sndPop[floor(random() * sndPop.length)].play();
+                    if (sndPop[id]) sndPop[id].play();
                 }
                 let popEffect = new PopEffect(bubbles[i].pos.x, bubbles[i].pos.y, bubbles[i].sizeMod);
                 popEffects.push(popEffect);
@@ -476,7 +480,7 @@ function popBubbles() {
 //===Call this when a lose life event should trigger
 function loseLife() {
     lives--;
-    sndLoseLife.play();
+    if (sndLoseLife) sndLoseLife.play();
     if (lives <= 0) {
         gameOver = true;
         checkHighscore();

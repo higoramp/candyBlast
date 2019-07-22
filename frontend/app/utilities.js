@@ -11,15 +11,7 @@ function checkHighscore() {
     }
 }
 
-/*
-//===Used for playing any sound
-function PlaySound(audio, loop) {
-    if (soundEnabled) {
-        audio.loop = loop;
-        audio.play();
-    }
-}
-*/
+
 
 function playMusic() {
     if (sndMusic) {
