@@ -152,7 +152,7 @@ function setup() {
 
     gameBeginning = true;
 
-    playMusic();
+    if (Koji.config.sounds.backgroundMusic) sndMusic = loadSound(Koji.config.sounds.backgroundMusic, playMusic);
 
 }
 
@@ -260,12 +260,10 @@ function draw() {
             popEffects[i].render();
         }
 
-
         for (let i = 0; i < bubbleParticles.length; i++) {
             bubbleParticles[i].update();
             bubbleParticles[i].render();
         }
-
 
         //===Update all floating text objects
         for (let i = 0; i < floatingTexts.length; i++) {
@@ -395,14 +393,12 @@ function touchStarted() {
 }
 
 function touchEnded() {
-
     //===This is required to fix a problem where the music sometimes doesn't start on mobile
     if (soundEnabled) {
         if (getAudioContext().state !== 'running') {
             getAudioContext().resume();
         }
     }
-
 }
 
 //===Call this every time you want to start or reset the game
@@ -466,7 +462,17 @@ function freezeBubbles() {
             bubbles[i].frozen = true;
         }
     }
-    floatingTexts.push(new FloatingText(width / 2, height / 2 - objSize * 3, Koji.config.strings.freezeText, Koji.config.colors.freezeColor, objSize * 3));
+
+    let txt = Koji.config.strings.freezeText;
+    let size = floor(objSize * 3);
+    textSize(size);
+
+    //Resize until it fits the screen
+    while (textWidth(txt) > width * 0.9) {
+        size *= 0.9;
+        textSize(size);
+    }
+    floatingTexts.push(new FloatingText(width / 2, height / 2 - objSize * 3, Koji.config.strings.freezeText, Koji.config.colors.freezeColor, size));
 }
 
 //Pop all bubbles
@@ -474,7 +480,17 @@ function popBubbles() {
     for (let i = 0; i < bubbles.length; i++) {
         bubbles[i].popped = true;
     }
-    floatingTexts.push(new FloatingText(width / 2, height / 2 - objSize * 7, Koji.config.strings.bombText, Koji.config.colors.bombTextColor, objSize * 3));
+
+    let txt = Koji.config.strings.freezeText;
+    let size = floor(objSize * 3);
+    textSize(size);
+
+    //Resize until it fits the screen
+    while (textWidth(txt) > width * 0.9) {
+        size *= 0.9;
+        textSize(size);
+    }
+    floatingTexts.push(new FloatingText(width / 2, height / 2 - objSize * 7, Koji.config.strings.bombText, Koji.config.colors.bombTextColor, size));
 }
 
 //===Call this when a lose life event should trigger
