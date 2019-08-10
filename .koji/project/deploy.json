@@ -1,8 +1,8 @@
 {
   "deploy": {
+    "subdomain": ".withkoji.com",
     "frontend": {
       "output": "frontend/build",
-      "type": "static",
       "commands": [
         "cd frontend",
         "npm install",
@@ -10,7 +10,7 @@
       ]
     },
     "backend": {
-      "output": "backend/dist",
+      "output": "backend",
       "type": "dynamic",
       "commands": [
         "cd backend",

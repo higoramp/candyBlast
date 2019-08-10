@@ -2,14 +2,14 @@
   "colors": {
     "backgroundColor": "#61BFD1",
     "textColor": "#ffffff",
-    "playButtonTextColor": "#61BFD1",
-    "playButtonColor": "#D6F6FC",
+    "buttonTextColor": "#61BFD1",
+    "buttonColor": "#D6F6FC",
     "scoreColor": "#FFEBD8",
     "highscoreColor": "#FFEBD8",
     "titleColor": "#D6F6FC",
     "instructionsColor": "#D6F6FC",
-    "playButtonHoverColor": "#97E0EE",
-    "playButtonClickColor": "#ffffff",
+    "buttonHoverColor": "#97E0EE",
+    "buttonClickColor": "#ffffff",
     "freezeColor": "#ffffff",
     "bombTextColor": "#ED4871"
   },
@@ -41,28 +41,23 @@
           "type": "color"
         },
         {
-          "key": "highscoreColor",
-          "name": "High Score color",
-          "type": "color"
-        },
-        {
-          "key": "playButtonTextColor",
+          "key": "buttonTextColor",
           "name": "Play Button Text Color",
           "type": "color"
         },
         {
-          "key": "playButtonColor",
-          "name": "Play Button Color",
+          "key": "buttonColor",
+          "name": "Button Color",
           "type": "color"
         },
         {
-          "key": "playButtonHoverColor",
-          "name": "Play Button Hover Color",
+          "key": "buttonHoverColor",
+          "name": "Button Hover Color",
           "type": "color"
         },
         {
-          "key": "playButtonClickColor",
-          "name": "Play Button Click Color",
+          "key": "buttonClickColor",
+          "name": "Button Click Color",
           "type": "color"
         },
         {

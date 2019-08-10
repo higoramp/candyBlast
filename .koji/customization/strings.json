@@ -19,7 +19,8 @@
     "spawnFrequency": "20",
     "bombFrequency": "1",
     "iceFrequency": "1",
-    "bombText": "BOOM!"
+    "bombText": "BOOM!",
+    "leaderboardButtonText": "LEADERBOARD"
   },
   "@@editor": [
     {
@@ -59,6 +60,12 @@
           "key": "playButtonText",
           "name": "Play Button Text",
           "description": "Label on the Play Button",
+          "type": "text"
+        },
+        {
+          "key": "leaderboardButtonText",
+          "name": "Leaderboard Button Text",
+          "description": "Label on the Leaderboard Button",
           "type": "text"
         },
         {
@@ -126,6 +133,12 @@
           "name": "Ice Frequency",
           "description": "How frequently the ice spawns (Integer)",
           "type": "text"
+        },
+        {
+          "key": "emailInputEnabled",
+          "name": "Enable E-Mail Input",
+          "description": "Enable/Disable E-Mail input while submitting score.",
+          "type": "boolean"
         }
       ]
     }

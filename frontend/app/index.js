@@ -12,12 +12,11 @@ let popEffects = [];
 //===Buttons
 let playButton;
 let soundButton;
+let leaderboardButton;
 
 
 //===Score data
 let score = 0;
-let highScore = 0;
-let highscoreGained = false;
 let scoreGain;
 
 //===Data taken from Game Settings
@@ -139,16 +138,12 @@ function setup() {
 
     isMobile = detectMobile();
 
-
-    //===Get high score data from local storage
-    if (localStorage.getItem("highscore")) {
-        highScore = localStorage.getItem("highscore");
-    }
-
     textFont(myFont); //set our font
+    document.body.style.fontFamily = myFont;
 
     playButton = new PlayButton();
     soundButton = new SoundButton();
+    leaderboardButton = new LeaderboardButton();
 
     gameBeginning = true;
 
@@ -223,26 +218,10 @@ function draw() {
         playButton.update();
         playButton.btn.draw();
 
-        //===Draw score text after the game
-        if (!gameBeginning) {
-            textSize(objSize * 0.9);
-            fill(Koji.config.colors.scoreColor);
-            textAlign(CENTER, TOP);
-            text(Koji.config.strings.scoreText + " " + score, width / 2, playButton.pos.y + objSize * 4);
-        }
+        leaderboardButton.update();
+        leaderboardButton.btn.draw();
 
-        //===Notify the player if they got a new high score, otherwise show the previous high score
-        if (highscoreGained) {
-            textSize(objSize * 1);
-            fill(Koji.config.colors.highscoreColor);
-            textAlign(CENTER, BOTTOM);
-            text(Koji.config.strings.highscoreGainedText, width / 2, height - objSize);
-        } else {
-            textSize(objSize * 1);
-            fill(Koji.config.colors.highscoreColor);
-            textAlign(CENTER, BOTTOM);
-            text(Koji.config.strings.highscoreText + "\n" + highScore, width / 2, height - objSize);
-        }
+   
     } else {
 
 
@@ -342,8 +321,7 @@ function cleanup() {
             }
 
             score += scoreGain;
-
-            checkHighscore();
+     
 
             bubbles[i].removable = true;
         }
@@ -406,7 +384,6 @@ function touchEnded() {
 function init() {
     gameOver = false;
 
-    highscoreGained = false;
     score = 0;
     lives = startingLives;
 
@@ -499,7 +476,11 @@ function loseLife() {
     if (sndLoseLife) sndLoseLife.play();
     if (lives <= 0) {
         gameOver = true;
-        checkHighscore();
+        
+        if(score > 0){
+            submitScore();
+        }
+
     }
 }
 

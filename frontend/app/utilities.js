@@ -1,16 +1,6 @@
 
 //===UTILITIES
 
-//Use this to check high score whenever you need. If the current score is higher than the previous highscore, it will update and save it in local storage
-function checkHighscore() {
-    if (score > highScore) {
-        highscoreGained = true;
-        highscore = score;
-
-        localStorage.setItem("highscore", highscore);
-    }
-}
-
 
 
 function playMusic() {
@@ -87,14 +77,12 @@ function SoundButton() {
 }
 
 
-
 class PlayButton {
     constructor() {
-
         this.btn = new Clickable();
         this.btn.textSize = floor(objSize * 0.9);
         this.btn.text = Koji.config.strings.playButtonText;
-        this.btn.textColor = Koji.config.colors.playButtonTextColor;
+        this.btn.textColor = Koji.config.colors.buttonTextColor;
 
         this.size = createVector(this.btn.textWidth, this.btn.textSize);
         this.pos = createVector(width / 2 - this.size.x / 2, height / 2 - this.size.y / 2 + objSize * 2);
@@ -109,13 +97,13 @@ class PlayButton {
 
 
         this.btn.onHover = function () {
-            this.color = Koji.config.colors.playButtonHoverColor;
+            this.color = Koji.config.colors.buttonHoverColor;
         }
         this.btn.onOutside = function () {
-            this.color = Koji.config.colors.playButtonColor;
+            this.color = Koji.config.colors.buttonColor;
         }
         this.btn.onPress = function () {
-            this.color = Koji.config.colors.playButtonClickColor;
+            this.color = Koji.config.colors.buttonClickColor;
         }
         this.btn.onRelease = function () {
             gameBeginning = false;
@@ -126,6 +114,7 @@ class PlayButton {
     update() {
 
         //Resize button to fit text
+        this.btn.textSize = floor(objSize * 0.9);
         this.size = createVector(this.btn.textWidth * 1.5, this.btn.textSize * 3);
 
         if (this.size.y > width) {
@@ -135,6 +124,59 @@ class PlayButton {
 
         this.pos.x = width / 2 - this.size.x / 2;
         this.pos.y = height / 2 - this.size.y / 2 + objSize * 2;
+        this.btn.locate(this.pos.x, this.pos.y);
+    }
+}
+
+class LeaderboardButton {
+    constructor() {
+        this.btn = new Clickable();
+        this.btn.textSize = floor(objSize * 0.9);
+        this.btn.text = Koji.config.strings.leaderboardButtonText;
+        this.btn.textColor = Koji.config.colors.buttonTextColor;
+
+        this.size = createVector(this.btn.textWidth, this.btn.textSize);
+        this.pos = createVector(width / 2 - this.size.x / 2, height - this.size.y / 2 - objSize * 2);
+
+        if (this.size.y > width) {
+            this.size.y = width;
+        }
+
+        this.btn.resize(this.size.x, this.size.y);
+
+        this.btn.strokeWeight = 0;
+
+
+        this.btn.onHover = function () {
+            this.color = Koji.config.colors.buttonHoverColor;
+        }
+        this.btn.onOutside = function () {
+            this.color = Koji.config.colors.buttonColor;
+        }
+        this.btn.onPress = function () {
+            this.color = Koji.config.colors.buttonClickColor;
+        }
+        this.btn.onRelease = function () {
+            window.setAppView("leaderboard");
+            if(sndMusic){
+                sndMusic.stop();
+            }
+        }
+    }
+
+    update() {
+
+        //Resize button to fit text
+        this.btn.textSize = floor(objSize * 0.9);
+        this.size = createVector(this.btn.textWidth * 1.5, this.btn.textSize * 3);
+
+        if (this.size.y > width) {
+            this.size.y = width;
+        }
+        this.btn.resize(this.size.x, this.size.y);
+
+        this.pos.x = width / 2 - this.size.x / 2;
+        this.pos.y = height - this.size.y / 2 - objSize * 4;
         this.btn.locate(this.pos.x, this.pos.y);
     }
 }
@@ -188,3 +230,13 @@ function Cosine(value, frequency, amplitude, timer) {
 
     return val;
 }
+
+function submitScore() {
+  if (sndMusic){
+   sndMusic.stop();
+  }
+
+  window.setScore(score);
+  window.setAppView("setScore");
+}
+
