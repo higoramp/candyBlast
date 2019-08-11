@@ -157,10 +157,10 @@ class LeaderboardButton {
             this.color = Koji.config.colors.buttonClickColor;
         }
         this.btn.onRelease = function () {
+
+            sndMusic = null;
             window.setAppView("leaderboard");
-            if(sndMusic){
-                sndMusic.stop();
-            }
+           
         }
     }
 
@@ -232,10 +232,7 @@ function Cosine(value, frequency, amplitude, timer) {
 }
 
 function submitScore() {
-  if (sndMusic){
-   sndMusic.stop();
-  }
-
+    sndMusic = null;
   window.setScore(score);
   window.setAppView("setScore");
 }

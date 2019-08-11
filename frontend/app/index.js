@@ -101,7 +101,7 @@ function preload() {
     soundFormats('wav', 'mp3');
 
     //===Load Sounds
-    if (Koji.config.sounds.backgroundMusic) sndMusic = loadSound(Koji.config.sounds.backgroundMusic);
+
     if (Koji.config.sounds.pop1) sndPop[0] = loadSound(Koji.config.sounds.pop1);
     if (Koji.config.sounds.pop2) sndPop[1] = loadSound(Koji.config.sounds.pop2);
     if (Koji.config.sounds.pop3) sndPop[2] = loadSound(Koji.config.sounds.pop3);
@@ -147,7 +147,7 @@ function setup() {
 
     gameBeginning = true;
 
-    if (Koji.config.sounds.backgroundMusic) sndMusic = loadSound(Koji.config.sounds.backgroundMusic, playMusic);
+    if (Koji.config.sounds.backgroundMusic && !sndMusic) sndMusic = loadSound(Koji.config.sounds.backgroundMusic, playMusic);
 
 }
 
@@ -221,7 +221,7 @@ function draw() {
         leaderboardButton.update();
         leaderboardButton.btn.draw();
 
-   
+
     } else {
 
 
@@ -321,7 +321,7 @@ function cleanup() {
             }
 
             score += scoreGain;
-     
+
 
             bubbles[i].removable = true;
         }
@@ -476,8 +476,8 @@ function loseLife() {
     if (sndLoseLife) sndLoseLife.play();
     if (lives <= 0) {
         gameOver = true;
-        
-        if(score > 0){
+
+        if (score > 0) {
             submitScore();
         }
 
