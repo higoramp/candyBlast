@@ -118,7 +118,7 @@ class SetScore extends Component {
                             type={'submit'}
                             style={{ backgroundColor: Koji.config.colors.buttonColor, color: Koji.config.colors.buttonTextColor }}
                         >
-                            {"Submit"}
+                            {this.state.isSubmitting ? "Submitting..." : "Submit"}
                         </button>
                     </form>
 
