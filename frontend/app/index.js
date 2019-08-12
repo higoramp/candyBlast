@@ -147,7 +147,7 @@ function setup() {
 
     gameBeginning = true;
 
-    if (Koji.config.sounds.backgroundMusic && !sndMusic) sndMusic = loadSound(Koji.config.sounds.backgroundMusic, playMusic);
+    if (Koji.config.sounds.backgroundMusic) sndMusic = loadSound(Koji.config.sounds.backgroundMusic, playMusic);
 
 }
 

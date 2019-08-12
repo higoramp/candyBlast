@@ -16,6 +16,9 @@ class GameContainer extends Component {
   }
 
   componentWillUnmount() {
+      if(sndMusic){
+          sndMusic.dispose();
+      }
     this.p5Game.remove();
   }
 

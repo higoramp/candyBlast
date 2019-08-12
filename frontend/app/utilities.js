@@ -31,8 +31,7 @@ function toggleSound() {
 
         if (soundEnabled) {
             disableSound();
-        } else {
-            enableSound();
+        } else {enableSound();
         }
 
         //A timeout is required to prevent double registering of touch input on mobile
@@ -157,8 +156,6 @@ class LeaderboardButton {
             this.color = Koji.config.colors.buttonClickColor;
         }
         this.btn.onRelease = function () {
-
-            sndMusic = null;
             window.setAppView("leaderboard");
            
         }
@@ -232,7 +229,7 @@ function Cosine(value, frequency, amplitude, timer) {
 }
 
 function submitScore() {
-    sndMusic = null;
+   
   window.setScore(score);
   window.setAppView("setScore");
 }
