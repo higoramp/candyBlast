@@ -1,0 +1,184 @@
+{
+  "test": {
+    "fontFamily": "https://fonts.googleapis.com/css?family=Baloo",
+    "character(0)[name]": "Higor",
+    "character(0)[Age]": "19",
+    "character": [
+      {
+        "name": "Higor",
+        "Age": "19"
+      },
+      {
+        "name": "",
+        "Age": ""
+      }
+    ],
+    "character(1)[name]": "",
+    "character(1)[Age]": "",
+    "Imagem(0)[imageUrl]": "https://images.koji-cdn.com/9e16d283-29d4-4751-9bcf-5916c4c14764/dogFlying.gif",
+    "Imagem": [
+      {
+        "imageUrl": "https://images.koji-cdn.com/9e16d283-29d4-4751-9bcf-5916c4c14764/dogFlying.gif"
+      },
+      {
+        "imageUrl": "https://images.koji-cdn.com/9e16d283-29d4-4751-9bcf-5916c4c14764/frame7.png"
+      }
+    ],
+    "enemy[name]": "Death",
+    "enemy[imageUrl]": "https://images.koji-cdn.com/9e16d283-29d4-4751-9bcf-5916c4c14764/frame1.png",
+    "enemy": {
+      "name": "Death",
+      "imageUrl": "https://images.koji-cdn.com/9e16d283-29d4-4751-9bcf-5916c4c14764/frame1.png"
+    },
+    "Imagem(1)[imageUrl]": "https://images.koji-cdn.com/9e16d283-29d4-4751-9bcf-5916c4c14764/frame7.png"
+  },
+  "@@editor": [
+    {
+      "key": "test",
+      "name": "Test Settings",
+      "icon": "💡",
+      "source": "teste.json",
+      "fields": [
+        {
+          "key": "character",
+          "array": true,
+          "name": "Character",
+          "description": "Insert the name of character",
+          "type": "object",
+          "multiple": true,
+          "fields": [
+            {
+              "key": "name",
+              "name": "Name of Character2",
+              "description": "Insert the name of character",
+              "type": "text"
+            },
+            {
+              "key": "Age",
+              "name": "Age of Character",
+              "description": "Insert the age of character",
+              "type": "text"
+            }
+          ],
+          "slot": 3
+        },
+        {
+          "key": "Imagem",
+          "array": true,
+          "name": "Character",
+          "description": "Insert the name of character",
+          "type": "object",
+          "multiple": true,
+          "fields": [
+            {
+              "key": "imageUrl",
+              "name": "Upload Image",
+              "description": "Insert the image of character",
+              "type": "image"
+            }
+          ],
+          "slot": 5
+        },
+        {
+          "key": "enemy",
+          "name": "Enemy",
+          "description": "There is only one true enemy",
+          "type": "object",
+          "fields": [
+            {
+              "key": "name",
+              "name": "Name of enemy",
+              "description": "Insert the name of enemy",
+              "type": "text"
+            },
+            {
+              "key": "imageUrl",
+              "name": "Upload Image",
+              "description": "Insert the image of enemy",
+              "type": "image"
+            }
+          ],
+          "slot": 5
+        },
+        {
+          "key": "character(0)[name]",
+          "name": "Name of Character2",
+          "description": "Insert the name of character",
+          "type": "text"
+        },
+        {
+          "key": "character(0)[Age]",
+          "name": "Age of Character",
+          "description": "Insert the age of character",
+          "type": "text"
+        },
+        {
+          "key": "character(1)[name]",
+          "name": "Name of Character2",
+          "description": "Insert the name of character",
+          "type": "text"
+        },
+        {
+          "key": "character(1)[Age]",
+          "name": "Age of Character",
+          "description": "Insert the age of character",
+          "type": "text"
+        },
+        {
+          "key": "character(2)[name]",
+          "name": "Name of Character2",
+          "description": "Insert the name of character",
+          "type": "text"
+        },
+        {
+          "key": "character(2)[Age]",
+          "name": "Age of Character",
+          "description": "Insert the age of character",
+          "type": "text"
+        },
+        {
+          "key": "Imagem(0)[imageUrl]",
+          "name": "Upload Image",
+          "description": "Insert the image of character",
+          "type": "image"
+        },
+        {
+          "key": "Imagem(1)[imageUrl]",
+          "name": "Upload Image",
+          "description": "Insert the image of character",
+          "type": "image"
+        },
+        {
+          "key": "Imagem(2)[imageUrl]",
+          "name": "Upload Image",
+          "description": "Insert the image of character",
+          "type": "image"
+        },
+        {
+          "key": "Imagem(3)[imageUrl]",
+          "name": "Upload Image",
+          "description": "Insert the image of character",
+          "type": "image"
+        },
+        {
+          "key": "Imagem(4)[imageUrl]",
+          "name": "Upload Image",
+          "description": "Insert the image of character",
+          "type": "image"
+        },
+        {
+          "key": "enemy[name]",
+          "name": "Name of enemy",
+          "description": "Insert the name of enemy",
+          "type": "text"
+        },
+        {
+          "key": "enemy[imageUrl]",
+          "name": "Upload Image",
+          "description": "Insert the image of enemy",
+          "type": "image"
+        }
+      ]
+    }
+  ]
+}

@@ -26,10 +26,14 @@ let lives;
 let minVelocityY = 2;
 let maxVelocityY = 3;
 
+let minVelocityX = 2;
+let maxVelocityX = 3;
+
 let spawnFrequency = 20;
 let startingBubbles = 3;
 let bombFrequency = 5;
 let iceFrequency = 5;
+let spawnPosY = 0.8;
 
 
 //===Images
@@ -78,7 +82,8 @@ function preload() {
     let newStr = myFont.replace("+", " ");
     myFont = newStr;
     //===
-
+    console.log("TESTE: ");
+    console.log(Koji.config.strings.testeArray);
     //===Load images
 
     //Load background if there's any
@@ -117,6 +122,7 @@ function preload() {
     startingBubbles = parseInt(Koji.config.strings.startingBubbles);
     bombFrequency = parseInt(Koji.config.strings.bombFrequency);
     iceFrequency = parseInt(Koji.config.strings.iceFrequency);
+    spawnPosY = parseFloat(Koji.config.strings.spawnPosY);
 
 }
 function setup() {
@@ -428,7 +434,7 @@ function checkSpawn() {
 }
 
 function spawnBubble(type) {
-    let pos = createVector(random(objSize, width - objSize), height + objSize * 2);
+    let pos = createVector(random(objSize, width - objSize), height * spawnPosY);
     bubbles.push(new Bubble(pos.x, pos.y, type));
 }
 

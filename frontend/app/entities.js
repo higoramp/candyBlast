@@ -69,7 +69,9 @@ class Bubble extends Entity {
         this.sizeMod = random(2, 3);
         this.sizeModX = this.sizeMod;
         this.sizeModY = this.sizeMod;
-        this.maxVelocity = createVector(0, random(minVelocityY, maxVelocityY));
+        this.directionX = 1;
+        this.directionY = 1;
+        this.maxVelocity = createVector(random(minVelocityX, maxVelocityX), random(minVelocityY, maxVelocityY));
         this.velocity = createVector(0, 0);
         this.popped = false;
         this.outOfScreen = false;
@@ -83,13 +85,34 @@ class Bubble extends Entity {
         if (!this.frozen) {
             this.sizeModX = Sinusoid(this.sizeModX, 4, 0.01, this.animationTimer);
             this.sizeModY = Cosine(this.sizeModY, 4, 0.01, this.animationTimer);
-            this.velocity.y = Smooth(this.velocity.y, -this.maxVelocity.y, 12);
+            this.velocity.y = Smooth(this.velocity.y, this.maxVelocity.y, 12);
+            this.velocity.x = Smooth(this.velocity.x, this.maxVelocity.x, 12);
         } else {
             this.velocity.y = Smooth(this.velocity.y, 0, 12);
+            this.velocity.x = Smooth(this.velocity.x, 0, 12);
             this.rotation = 0;
         }
-        this.pos.add(this.velocity);
+        
+        
 
+        //Check boundaries and change direction if needed
+        if((this.pos.x<=0 && this.directionX<0) || (this.pos.x>width && this.directionX>0)){
+            this.directionX=-this.directionX;
+        }else{
+            // check if duck will turn direction randomly
+            if (random(0,1)>0.98){
+                this.directionX= -this.directionX;  
+            }
+        }
+        if((this.pos.y<=0 && this.directionY<0) || (this.pos.y>height*spawnPosY && this.directionY>0)){
+            this.directionY=-this.directionY;
+        }else{
+            if ((random(0,1)>0.98 && this.directionY>0)||(random(0,1)>0.995)){
+                this.directionY= -this.directionY;  
+            }
+        }
+
+        this.pos.add(this.directionX*this.velocity.x, this.directionY*this.velocity.y);
         if (this.pos.y < -objSize * this.sizeMod) {
             this.removable = true;
             this.outOfScreen = true;
