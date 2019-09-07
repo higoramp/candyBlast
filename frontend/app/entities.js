@@ -91,7 +91,7 @@ class Duck extends Entity {
                     this.canScape = true;
                 }, 5000);
             }
-        }, 1000);
+        }, 10000);
     }
 
     update() {
