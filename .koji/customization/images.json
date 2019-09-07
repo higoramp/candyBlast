@@ -5,14 +5,15 @@
     "lifeIcon": "https://images.koji-cdn.com/9e16d283-29d4-4751-9bcf-5916c4c14764/frame1.png",
     "background": "https://images.koji-cdn.com/9e16d283-29d4-4751-9bcf-5916c4c14764/bg2.png",
     "duck": "https://images.koji-cdn.com/9e16d283-29d4-4751-9bcf-5916c4c14764/frame1.png",
-    "bubbleSmall": "https://images.koji-cdn.com/9e16d283-29d4-4751-9bcf-5916c4c14764/tinychickencooked96x96.png",
-    "popEffect": "https://i.imgur.com/oudp0IP.png",
+    "duckSmall": "https://images.koji-cdn.com/9e16d283-29d4-4751-9bcf-5916c4c14764/tinychickencooked96x96.png",
+    "popEffect": "https://images.koji-cdn.com/9e16d283-29d4-4751-9bcf-5916c4c14764/shot.png",
     "bubbleBomb": "https://images.koji-cdn.com/9e16d283-29d4-4751-9bcf-5916c4c14764/dogFlying.gif",
     "bubbleIce": "https://i.imgur.com/XGRZwJV.png",
     "bubbleFrozen": "https://i.imgur.com/j4H50i9.png",
     "explosion": "https://i.imgur.com/AbPceWn.png",
     "ammoIcon": "https://images.koji-cdn.com/9e16d283-29d4-4751-9bcf-5916c4c14764/bullet.png",
-    "alertIcon": "https://images.koji-cdn.com/9e16d283-29d4-4751-9bcf-5916c4c14764/exclamation.png"
+    "alertIcon": "https://images.koji-cdn.com/9e16d283-29d4-4751-9bcf-5916c4c14764/exclamation2.png",
+    "shotEffect": "https://images.koji-cdn.com/9e16d283-29d4-4751-9bcf-5916c4c14764/shot2.png"
   },
   "@@editor": [
     {
@@ -48,13 +49,13 @@
         {
           "key": "duck",
           "name": "Duck",
-          "description": "Ideal canvas size: 256x256",
+          "description": "",
           "type": "image"
         },
         {
           "key": "ammoIcon",
           "name": "Ammo",
-          "description": "Ideal canvas size: 256x256",
+          "description": "",
           "type": "image"
         },
         {
@@ -66,37 +67,43 @@
         {
           "key": "bubbleBomb",
           "name": "Bomb",
-          "description": "Destroys all other bubbles on screen. Ideal canvas size: 256x256",
+          "description": "Destroys all other bubbles on screen. ",
           "type": "image"
         },
         {
           "key": "bubbleIce",
           "name": "Freezing Bubble",
-          "description": "Freezes all other bubbles. Ideal canvas size: 256x256",
+          "description": "Freezes all other bubbles. ",
           "type": "image"
         },
         {
           "key": "bubbleFrozen",
           "name": "Frozen Bubble",
-          "description": "Ideal canvas size: 256x256",
+          "description": "",
           "type": "image"
         },
         {
-          "key": "bubbleSmall",
-          "name": "Small Bubble",
-          "description": "Small bubbles that appear after a big one is popped. Ideal canvas size: 256x256",
+          "key": "duckSmall",
+          "name": "Duck Pieces",
+          "description": "Small pieces that appear after a duck is Killed.",
+          "type": "image"
+        },
+        {
+          "key": "shotEffect",
+          "name": "Shot Effect",
+          "description": "A image that appear on a Shot. ",
           "type": "image"
         },
         {
           "key": "popEffect",
           "name": "Bubble Pop Effect",
-          "description": "A particle effect after the main bubble is popped. Ideal canvas size: 256x256",
+          "description": "A particle effect after the main bubble is popped. ",
           "type": "image"
         },
         {
           "key": "explosion",
           "name": "Explosion Effect",
-          "description": "A particle effect after a bomb is popped. Ideal canvas size: 256x256",
+          "description": "A particle effect after a bomb is popped. ",
           "type": "image"
         }
       ]

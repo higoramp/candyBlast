@@ -91,15 +91,13 @@ class Duck extends Entity {
                     this.canScape = true;
                 }, 5000);
             }
-        }, 10000);
+        }, 1000);
     }
 
     update() {
         this.animationTimer += 1 / frameRate();
-
+            
         if (!this.frozen) {
-            this.sizeModX = Sinusoid(2, 4, 0.3, this.animationTimer);
-            this.sizeModY = Cosine(2, 4, 0.3, this.animationTimer);
             this.velocity.y = Smooth(this.velocity.y, this.maxVelocity.y, 12);
             this.velocity.x = Smooth(this.velocity.x, this.maxVelocity.x, 12);
         } else {
@@ -137,34 +135,37 @@ class Duck extends Entity {
 
     //override
     render() {
-        let sizeX = objSize * this.sizeModX;
-        let sizeY = objSize * this.sizeModY;
+        let sizeModX = this.sizeModX;
+        let sizeModY = this.sizeModY;
+
+        //just for animate a little the duck
+        if (!this.frozen) {
+             sizeModX = Sinusoid(this.sizeModX, 4, 0.3, this.animationTimer);
+             sizeModY = Cosine(this.sizeModY, 4, 0.3, this.animationTimer);
+        }
+
+        let sizeX = objSize * sizeModX;
+        let sizeY = objSize * sizeModY;
+
+        let sizeAlertX =  Sinusoid(sizeX/2, 8, sizeX/8, this.animationTimer);
+        let sizeAlertY = Sinusoid(sizeY/2, 8, sizeY/8, this.animationTimer);
 
         this.img = imgBubble[this.type];
         if (this.frozen) {
             this.img = imgBubbleFrozen;
         }
 
+        //just for animate a little the alert
         if (this.alertMode){
-            if(this.sizeAlertX<sizeX/2 && !this.shrinkAlert){
-                this.sizeAlertX=Smooth(this.sizeAlertX,sizeX/2, 6);
-                this.sizeAlertY= Smooth(this.sizeAlertY,sizeY/2, 6);
-            }else{
-                if(this.sizeAlertX>3*sizeX/8){
-                    this.sizeAlertX=Smooth(this.sizeAlertX,3*sizeX/8, 6);
-                    this.sizeAlertY= Smooth(this.sizeAlertY,3*sizeY/8, 6);
-                    this.shrinkAlert = true;
-                }else{
-                    this.shrinkAlert=false;
-                }
-            }
+                this.sizeAlertX=Smooth(this.sizeAlertX,sizeAlertX, 6);
+                this.sizeAlertY= Smooth(this.sizeAlertY,sizeAlertY, 6);
         }
         push();
         translate(this.pos.x, this.pos.y);
         rotate(this.rotation);
         scale(this.scale.x, this.scale.y);
         if(this.alertMode){
-            image(imgAlertIcon, (-sizeX+this.sizeAlertX) / 4, (-sizeY-2*this.sizeAlertY) / 2, this.sizeAlertX, this.sizeAlertY);
+            image(imgAlertIcon, -sizeAlertX*3/8 ,(-sizeY/2-sizeAlertY), sizeAlertX, sizeAlertY);
         }
         image(this.img, -sizeX / 2, -sizeY / 2, sizeX, sizeY);
         
@@ -184,10 +185,10 @@ class Duck extends Entity {
 }
 
 //Small bubbles that emerge when you pop a big one
-class BubbleParticle extends Entity {
+class DuckParticle extends Entity {
     constructor(x, y) {
         super(x, y);
-        this.img = imgBubbleParticle;
+        this.img = imgDuckParticle;
         this.rotation = random() * Math.PI;
         this.maxSize = random(0.5, 1);
         this.sizeMod = 0.1;
@@ -230,10 +231,10 @@ class BubbleParticle extends Entity {
 }
 
 //A quick effect that spawns for a moment after popping a duck
-class PopEffect extends Entity {
+class ShotEffect extends Entity {
     constructor(x, y, size) {
         super(x, y);
-        this.img = imgPopEffect;
+        this.img = imgShotEffect;
         this.rotation = random() * Math.PI;
         this.maxSize = size;
         this.sizeMod = 0.1;
@@ -253,7 +254,7 @@ class PopEffect extends Entity {
 }
 
 //Same as pop effect but an explosion instead
-class Explosion extends PopEffect {
+class Explosion extends ShotEffect {
     constructor(x, y, size) {
         super(x, y);
         this.img = imgExplosion;

@@ -6,8 +6,8 @@ let gameBeginning = true; //Should be true only before the user starts the game 
 //===Game objects
 //Declare game objects here like player, enemies etc
 let ducks = [];
-let bubbleParticles = [];
-let popEffects = [];
+let duckParticles = [];
+let shotEffects = [];
 
 let bullets = 6;
 
@@ -53,8 +53,8 @@ let imgLife;
 let imgBullet;
 let imgBubble = [];
 let imgBubbleFrozen;
-let imgBubbleParticle;
-let imgPopEffect;
+let imgDuckParticle;
+let imgShotEffect;
 let imgExplosion;
 let alertIcon;
 //===Audio
@@ -113,8 +113,8 @@ function preload() {
     imgBubble[1] = loadImage(Koji.config.images.bubbleBomb);
     imgBubble[2] = loadImage(Koji.config.images.bubbleIce);
     imgBubbleFrozen = loadImage(Koji.config.images.bubbleFrozen);
-    imgBubbleParticle = loadImage(Koji.config.images.bubbleSmall);
-    imgPopEffect = loadImage(Koji.config.images.popEffect);
+    imgDuckParticle = loadImage(Koji.config.images.duckSmall);
+    imgShotEffect = loadImage(Koji.config.images.shotEffect);
     imgExplosion = loadImage(Koji.config.images.explosion);
     imgAlertIcon = loadImage(Koji.config.images.alertIcon);
     firing = false;
@@ -270,14 +270,14 @@ function draw() {
             ducks[i].render();
         }
 
-        for (let i = 0; i < popEffects.length; i++) {
-            popEffects[i].update();
-            popEffects[i].render();
+        for (let i = 0; i < shotEffects.length; i++) {
+            shotEffects[i].update();
+            shotEffects[i].render();
         }
 
-        for (let i = 0; i < bubbleParticles.length; i++) {
-            bubbleParticles[i].update();
-            bubbleParticles[i].render();
+        for (let i = 0; i < duckParticles.length; i++) {
+            duckParticles[i].update();
+            duckParticles[i].render();
         }
 
         //===Update all floating text objects
@@ -335,9 +335,9 @@ function cleanup() {
             let particleCount = random(3, 8);
             for (let j = 0; j < particleCount; j++) {
                 let pos = createVector(ducks[i].pos.x + objSize * random(-0.5, 0.5) * ducks[i].sizeMod / 2, ducks[i].pos.y + objSize * random(-0.5, 0.5) * ducks[i].sizeMod / 2);
-                let particle = new BubbleParticle(pos.x, pos.y);
+                let particle = new DuckParticle(pos.x, pos.y);
                 particle.velocity.x = random(0.2, 0.4) * objSize * Math.sign(pos.x - ducks[i].pos.x);
-                bubbleParticles.push(particle);
+                duckParticles.push(particle);
                 
             }
             floatingTexts.push(new FloatingText(ducks[i].pos.x, ducks[i].pos.y, "+"+scoreGain, Koji.config.colors.roundTextColor, objSize, 0.7));
@@ -347,7 +347,7 @@ function cleanup() {
             if (ducks[i].type == 1) {
                 popBubbles();
                 let popEffect = new Explosion(ducks[i].pos.x, ducks[i].pos.y, ducks[i].sizeMod);
-                popEffects.push(popEffect);
+                shotEffects.push(popEffect);
 
                 if (sndExplosion) {
                     sndExplosion.setVolume(0.5);
@@ -364,8 +364,8 @@ function cleanup() {
 
                     if (sndPop[id]) sndPop[id].play();
                 }
-                let popEffect = new PopEffect(ducks[i].pos.x, ducks[i].pos.y, ducks[i].sizeMod);
-                popEffects.push(popEffect);
+                let shotEffect = new ShotEffect(ducks[i].pos.x, ducks[i].pos.y, ducks[i].sizeMod);
+                shotEffects.push(shotEffect);
             }
             nDucksShot++;
             
@@ -388,15 +388,15 @@ function cleanup() {
         }
     }
 
-    for (let i = 0; i < bubbleParticles.length; i++) {
-        if (bubbleParticles[i].removable) {
-            bubbleParticles.splice(i, 1);
+    for (let i = 0; i < duckParticles.length; i++) {
+        if (duckParticles[i].removable) {
+            duckParticles.splice(i, 1);
         }
     }
 
-    for (let i = 0; i < popEffects.length; i++) {
-        if (popEffects[i].removable) {
-            popEffects.splice(i, 1);
+    for (let i = 0; i < shotEffects.length; i++) {
+        if (shotEffects[i].removable) {
+            shotEffects.splice(i, 1);
         }
     }
 }
@@ -415,7 +415,10 @@ firing
         //Ingame
         if (!firing){ //Prevent accidental double click
             bullets--;
-            
+            if (sndExplosion) {
+                    sndExplosion.setVolume(0.5);
+                    sndExplosion.play();
+            }
             setTimeout(() => {
                 firing = false;
             }, 100);
@@ -428,7 +431,10 @@ firing
             }
         }
         if(!gotShot&&!firing){
-            pushText(Koji.config.strings.missText, Koji.config.colors.missTextColor, objSize, 0.5);
+            
+            floatingTexts.push(new FloatingText(mouseX, mouseY-objSize*2,Koji.config.strings.missText , Koji.config.colors.missTextColor, objSize, 0.5));
+            let shotEffect = new ShotEffect(mouseX - objSize/12, mouseY-objSize/12, objSize/12);
+                shotEffects.push(shotEffect);
         }
         firing = true;
     }
@@ -455,8 +461,8 @@ function init() {
     floatingTexts = [];
 
     ducks = [];
-    bubbleParticles = [];
-    popEffects = [];
+    duckParticles = [];
+    shotEffects = [];
 
     for (let i = 0; i < startingDucks; i++) {
         spawnDuck(0);
