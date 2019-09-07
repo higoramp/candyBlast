@@ -1,12 +1,13 @@
 {
   "sounds": {
-    "backgroundMusic": "https://objects.koji-cdn.com/dede4ffa-95b4-4189-978b-58a22c9ed52f/music.mp3",
-    "pop1": "https://objects.koji-cdn.com/dede4ffa-95b4-4189-978b-58a22c9ed52f/pop1.wav",
+    "backgroundMusic": "https://objects.koji-cdn.com/9e16d283-29d4-4751-9bcf-5916c4c14764/8BitIndigestionLooping.mp3",
+    "pop1": "https://objects.koji-cdn.com/dede4ffa-95b4-4189-978b-58a22c9ed52f/pop2.wav",
     "pop2": "https://objects.koji-cdn.com/dede4ffa-95b4-4189-978b-58a22c9ed52f/pop2.wav",
     "pop3": "https://objects.koji-cdn.com/dede4ffa-95b4-4189-978b-58a22c9ed52f/pop3.wav",
     "explosion": "https://objects.koji-cdn.com/dede4ffa-95b4-4189-978b-58a22c9ed52f/explosion.wav",
     "freeze": "https://objects.koji-cdn.com/dede4ffa-95b4-4189-978b-58a22c9ed52f/freeze.wav",
-    "loseLife": "https://objects.koji-cdn.com/dede4ffa-95b4-4189-978b-58a22c9ed52f/lose.wav"
+    "loseLife": "https://objects.koji-cdn.com/dede4ffa-95b4-4189-978b-58a22c9ed52f/lose.wav",
+    "alertSound": "https://objects.koji-cdn.com/9e16d283-29d4-4751-9bcf-5916c4c14764/SynthChime2.mp3"
   },
   "@@editor": [
     {
@@ -55,6 +56,12 @@
           "key": "loseLife",
           "name": "Lose Life",
           "description": "When you let a bubble escape",
+          "type": "sound"
+        },
+        {
+          "key": "alertSound",
+          "name": "Alert Sound",
+          "description": "When a duck is about to escape",
           "type": "sound"
         }
       ]

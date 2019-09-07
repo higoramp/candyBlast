@@ -11,7 +11,9 @@
     "buttonHoverColor": "#97E0EE",
     "buttonClickColor": "#ffffff",
     "freezeColor": "#ffffff",
-    "bombTextColor": "#ED4871"
+    "bombTextColor": "#ED4871",
+    "roundTextColor": "#c1f1be",
+    "missTextColor": "#c03737"
   },
   "@@editor": [
     {
@@ -68,6 +70,16 @@
         {
           "key": "bombTextColor",
           "name": "Bomb Text Color",
+          "type": "color"
+        },
+        {
+          "key": "roundTextColor",
+          "name": "Round Text Color",
+          "type": "color"
+        },
+        {
+          "key": "missTextColor",
+          "name": "Miss Text Color",
           "type": "color"
         }
       ]

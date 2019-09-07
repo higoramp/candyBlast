@@ -1,13 +1,13 @@
 {
   "strings": {
     "fontFamily": "https://fonts.googleapis.com/css?family=Baloo",
-    "title": "Pop The Bubble",
-    "instructions1": "Tap on bubbles as they appear to pop them",
-    "instructions2": "Don't let any bubbles escape!",
+    "title": "Hunt the Duck",
+    "instructions1": "Tap to fire!",
+    "instructions2": "Don't let any ducks escape!",
     "instructions3": "",
     "gameOverText": "GAME OVER",
     "highScoreText": "High Score:",
-    "playButtonText": "POP SOME BUBBLES!",
+    "playButtonText": "Start Hunting!",
     "scoreText": "Score:",
     "highscoreText": "High Score:",
     "highscoreGainedText": "New High Score!",
@@ -20,7 +20,13 @@
     "bombFrequency": "1",
     "iceFrequency": "1",
     "bombText": "BOOM!",
-    "leaderboardButtonText": "LEADERBOARD"
+    "leaderboardButtonText": "LEADERBOARD",
+    "missText": "MISS",
+    "roundText": "Next Round!",
+    "startingDucks": "3",
+    "ducksIncrease": "1",
+    "startingBullets": "6",
+    "congratulationsText": "Well Done!"
   },
   "@@editor": [
     {
@@ -93,6 +99,12 @@
           "type": "text"
         },
         {
+          "key": "missText",
+          "name": "Miss Text",
+          "description": "Splash text when you miss a shot ",
+          "type": "text"
+        },
+        {
           "key": "bombText",
           "name": "Bomb Text",
           "description": "Splash text when you pop a bomb",
@@ -111,9 +123,15 @@
           "type": "text"
         },
         {
-          "key": "startingBubbles",
-          "name": "Starting Bubbles",
-          "description": "How many bubbles spawn at the beginning (Integer)",
+          "key": "startingDucks",
+          "name": "Starting Ducks",
+          "description": "How many ducks spawn at the beginning (Integer)",
+          "type": "text"
+        },
+        {
+          "key": "startingBullets",
+          "name": "Starting Bullets",
+          "description": "How many bullets play will have at the beginning (Integer)",
           "type": "text"
         },
         {
@@ -139,6 +157,24 @@
           "name": "Enable E-Mail Input",
           "description": "Enable/Disable E-Mail input while submitting score.",
           "type": "boolean"
+        },
+        {
+          "key": "ducksIncrease",
+          "name": "Ducks Inscrease per Round",
+          "description": "How much ducks will be added on next Round.",
+          "type": "text"
+        },
+        {
+          "key": "roundText",
+          "name": "Round Text",
+          "description": "Splash text when you pass a Round.",
+          "type": "text"
+        },
+        {
+          "key": "congratulationsText",
+          "name": "Congratulations Text",
+          "description": "Splash text when you pass a Round with great performance.",
+          "type": "text"
         }
       ]
     }

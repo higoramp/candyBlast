@@ -2,15 +2,17 @@
   "images": {
     "soundImage": "https://i.imgur.com/rtFppa8.png",
     "muteImage": "https://i.imgur.com/AR7C733.png",
-    "lifeIcon": "https://i.imgur.com/SKksWaw.png",
-    "background": "https://i.imgur.com/ZfkZJ3y.png",
-    "bubble": "https://i.imgur.com/Bbmb5HU.png",
-    "bubbleSmall": "https://i.imgur.com/FzpXYOh.png",
+    "lifeIcon": "https://images.koji-cdn.com/9e16d283-29d4-4751-9bcf-5916c4c14764/frame1.png",
+    "background": "https://images.koji-cdn.com/9e16d283-29d4-4751-9bcf-5916c4c14764/bg2.png",
+    "duck": "https://images.koji-cdn.com/9e16d283-29d4-4751-9bcf-5916c4c14764/frame1.png",
+    "bubbleSmall": "https://images.koji-cdn.com/9e16d283-29d4-4751-9bcf-5916c4c14764/tinychickencooked96x96.png",
     "popEffect": "https://i.imgur.com/oudp0IP.png",
-    "bubbleBomb": "https://i.imgur.com/1km9U1Y.png",
+    "bubbleBomb": "https://images.koji-cdn.com/9e16d283-29d4-4751-9bcf-5916c4c14764/dogFlying.gif",
     "bubbleIce": "https://i.imgur.com/XGRZwJV.png",
     "bubbleFrozen": "https://i.imgur.com/j4H50i9.png",
-    "explosion": "https://i.imgur.com/AbPceWn.png"
+    "explosion": "https://i.imgur.com/AbPceWn.png",
+    "ammoIcon": "https://images.koji-cdn.com/9e16d283-29d4-4751-9bcf-5916c4c14764/bullet.png",
+    "alertIcon": "https://images.koji-cdn.com/9e16d283-29d4-4751-9bcf-5916c4c14764/exclamation.png"
   },
   "@@editor": [
     {
@@ -44,9 +46,21 @@
           "type": "image"
         },
         {
-          "key": "bubble",
-          "name": "Bubble",
+          "key": "duck",
+          "name": "Duck",
           "description": "Ideal canvas size: 256x256",
+          "type": "image"
+        },
+        {
+          "key": "ammoIcon",
+          "name": "Ammo",
+          "description": "Ideal canvas size: 256x256",
+          "type": "image"
+        },
+        {
+          "key": "alertIcon",
+          "name": "Alert Icon",
+          "description": "A Icon that will show when duck is about to escape.",
           "type": "image"
         },
         {
