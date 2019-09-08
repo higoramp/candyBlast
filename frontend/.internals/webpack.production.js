@@ -150,10 +150,6 @@ module.exports = {
   ],
   resolve: {
     modules: ['node_modules', 'frontend'],
-    root: [
-        path.resolve(__dirname, './libs')
-
-    ],
     extensions: ['.js', '.jsx', '.react.js'],
     mainFields: ['browser', 'jsnext:main', 'main'],
   }
