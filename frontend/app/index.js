@@ -169,7 +169,7 @@ function setup() {
     }
 
     createCanvas(width, height);
-    imgDuck[0].delay(250);
+    //imgDuck[0].delay(250);
     //===Determine basic object size depending on size of the screen
     objSize = floor(min(floor(width / gameSize), floor(height / gameSize)) * sizeModifier);
     
