@@ -70,7 +70,10 @@ class Duck extends Entity {
         this.sizeModY = this.sizeMod;
         this.directionX = 1;
         this.directionY = 1;
-        this.maxVelocity = createVector(random(minVelocityX, maxVelocityX), random(minVelocityY, maxVelocityY));
+        this.maxVelocity = this.getMaxVelocity(this.directionX, this.directionY);
+        console.log(this.maxVelocity);
+        
+        console.log("Max: "+(minVelocityX*1.1**(round+2))+":"+(maxVelocityX*1.1**(round+2)) +"   -  "+ minVelocityY+": "+ (maxVelocityY*1.1**(round+2)));
         this.velocity = createVector(0, 0);
         this.popped = false;
         this.outOfScreen = false;
@@ -93,13 +96,15 @@ class Duck extends Entity {
             }
         }, 10000);
     }
-
+     getMaxVelocity(directionX, directionY){
+         return createVector(random(directionX*minVelocityX*1.1**(round+2), directionX*maxVelocityX*1.1**(round+2)), random(directionY*minVelocityY, directionY*maxVelocityY**1.1^(round+2)));
+     }
     update() {
         this.animationTimer += 1 / frameRate();
             
         if (!this.frozen) {
-            this.velocity.y = Smooth(this.velocity.y, this.maxVelocity.y, 12);
-            this.velocity.x = Smooth(this.velocity.x, this.maxVelocity.x, 12);
+            this.velocity.y = Smooth(this.velocity.y, this.maxVelocity.y, 4);
+            this.velocity.x = Smooth(this.velocity.x, this.maxVelocity.x, 4);
         } else {
             this.velocity.y = Smooth(this.velocity.y, 0, 12);
             this.velocity.x = Smooth(this.velocity.x, 0, 12);
@@ -110,27 +115,36 @@ class Duck extends Entity {
         //Check boundaries and change direction if duck can't escape
         if(!this.canScape&&(this.pos.x<=(objSize*this.sizeModX/2) && this.directionX<0) || (this.pos.x>width-(objSize*this.sizeModX/2) && this.directionX>0)){
             this.directionX=-this.directionX;
+           // this.velocity.x=this.directionX*this.velocity.x;
             this.scale.x = -this.scale.x;
         }else{
             // check if duck will turn direction randomly
             if (random(0,1)>(0.99-0.001*round)){
-                this.directionX= -this.directionX;  
+                this.directionX= -this.directionX;
                 this.scale.x = -this.scale.x;
+                // this.velocity.x=0;
+                this.maxVelocity = this.getMaxVelocity(1, 1);
             }
         }
         if(!this.canScape&&(this.pos.y<=objSize*this.sizeModY/2 && this.directionY<0) || (this.pos.y>height*spawnPosY-objSize*this.sizeModY/2 && this.directionY>0)){
             this.directionY=-this.directionY;
+            //this.velocity.y=this.directionY*this.velocity.y;
         }else{
             if ((random(0,1)>0.98 && this.directionY>0)||(random(0,1)>(0.995-0.001*round))){
                 this.directionY= -this.directionY;  
+                this.maxVelocity = this.getMaxVelocity(1,1);
+                // this.velocity.y=0;
             }
         }
 
         this.pos.add(this.directionX*this.velocity.x, this.directionY*this.velocity.y);
-        if (this.pos.y < -objSize * this.sizeMod) {
+        if (this.pos.y < -objSize * this.sizeMod || this.pos.x > (width +objSize*this.sizeMod/2)|| this.pos.x < (-objSize * this.sizeMod/2)) {
             this.removable = true;
             this.outOfScreen = true;
         }
+
+        //Update the angle
+        this.rotation = this.directionX*Math.asin(this.velocity.y*this.directionY/(Math.sqrt(this.velocity.x*this.velocity.x+this.velocity.y*this.velocity.y)));
     }
 
     //override

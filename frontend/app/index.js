@@ -34,7 +34,7 @@ let startingLives;
 
 
 let minVelocityY = 1;
-let maxVelocityY = 3;
+let maxVelocityY = 2;
 
 let minVelocityX = 2;
 let maxVelocityX = 3;
@@ -487,8 +487,6 @@ function newRound(){
                             numberDucks = floor( startingDucks + ducksIncrease * round);
                             bullets += numberDucks*1.5;
                             createdDucks = 0;
-                            maxVelocityX=maxVelocityX*1.1;
-                            maxVelocityY=maxVelocityY*1.1;
                             creatingRound = false;
                             ducksKilled=0;
                         }, 2000);
@@ -534,7 +532,6 @@ function checkSpawn() {
 
 function spawnDuck(type) {
     let pos = createVector(random(objSize, width - objSize), parseInt(height*spawnPosY));
-    console.log("AAAAAAAAA"+parseInt(height*spawnPosY)+" : "+height+ " : "+spawnPosY);
     ducks.push(new Duck(pos.x, pos.y, type));
     createdDucks++;
 }
@@ -588,6 +585,7 @@ function loseLife() {
     if (sndLoseLife) sndLoseLife.play();
     if (lives <= 0) {
         gameOver = true;
+        round=0;
 
         if (score > 0) {
             submitScore();
