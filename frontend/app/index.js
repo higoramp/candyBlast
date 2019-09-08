@@ -34,10 +34,10 @@ let startingLives;
 
 
 let minVelocityY = 1;
-let maxVelocityY = 2;
+let maxVelocityY = 3;
 
 let minVelocityX = 2;
-let maxVelocityX = 3;
+let maxVelocityX = 4;
 
 let spawnFrequency = 20;
 let startingDucks = 3;
@@ -51,7 +51,8 @@ let spawnPosY = 0.7;
 let imgBackground;
 let imgLife;
 let imgBullet;
-let imgBubble = [];
+let imgDuck = [];
+let imgHelm;
 let imgBubbleFrozen;
 let imgDuckParticle;
 let imgShotEffect;
@@ -109,10 +110,12 @@ function preload() {
 
     imgLife = loadImage(Koji.config.images.lifeIcon);
     imgBullet = loadImage(Koji.config.images.ammoIcon);
-    imgBubble[0] = loadImage(Koji.config.images.duck);
-    imgBubble[1] = loadImage(Koji.config.images.bubbleBomb);
-    imgBubble[2] = loadImage(Koji.config.images.bubbleIce);
+    imgDuck[0] = loadImage(Koji.config.images.duck);
+
+    imgDuck[1] = loadImage(Koji.config.images.bubbleBomb);
+    imgDuck[2] = loadImage(Koji.config.images.bubbleIce);
     imgBubbleFrozen = loadImage(Koji.config.images.bubbleFrozen);
+    imgHelm = loadImage(Koji.config.images.helm);
     imgDuckParticle = loadImage(Koji.config.images.duckSmall);
     imgShotEffect = loadImage(Koji.config.images.shotEffect);
     imgExplosion = loadImage(Koji.config.images.explosion);
@@ -152,13 +155,13 @@ function preload() {
 
 }
 function setup() {
-
+    
     // make a full screen canvas
     width = window.innerWidth;
     height = window.innerHeight;
 
     window.addEventListener('resize', resize, false);
-
+        
     //===How much of the screen should the game take
     let sizeModifier = 0.75;
     if (height > width) {
@@ -166,7 +169,7 @@ function setup() {
     }
 
     createCanvas(width, height);
-
+    imgDuck[0].delay(250);
     //===Determine basic object size depending on size of the screen
     objSize = floor(min(floor(width / gameSize), floor(height / gameSize)) * sizeModifier);
     
@@ -188,7 +191,6 @@ function resize(){
     resizeCanvas(window.innerWidth, window.innerHeight);
 }
 function draw() {
-
     //Draw background or a solid color
     if (imgBackground) {
         background(imgBackground);

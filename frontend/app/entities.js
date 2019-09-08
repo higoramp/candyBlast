@@ -64,7 +64,7 @@ class Duck extends Entity {
     constructor(x, y, type) {
         super(x, y);
         this.type = type;
-        this.img = imgBubble[type];
+        this.img = imgDuck[type];
         this.sizeMod = random(1, 3);
         this.sizeModX = this.sizeMod;
         this.sizeModY = this.sizeMod;
@@ -97,14 +97,49 @@ class Duck extends Entity {
         }, 10000);
     }
      getMaxVelocity(directionX, directionY){
-         return createVector(random(directionX*minVelocityX*1.1**(round+2), directionX*maxVelocityX*1.1**(round+2)), random(directionY*minVelocityY, directionY*maxVelocityY**1.1^(round+2)));
+         return createVector(random(directionX*minVelocityX*1.1**(round+2), directionX*maxVelocityX*1.1**(round+2)), 
+         random(directionY*minVelocityY, directionY*maxVelocityY**1.1^(round+2)));
+     }
+
+     turnDirectionsRandomly(){
+       let directionX = this.velocity.x>=0?1:-1;
+       let directionY = this.velocity.y>=0?1:-1;
+         //Will turn directions?
+         if(this.pos.y>=height/3&&this.maxVelocity.y>0&&(random(0,1)>0.85)){
+                 this.maxVelocity =this.getMaxVelocity(directionX, -1*directionY);
+         }
+         if((random(0,1)>(0.995-0.001*round))){
+             
+
+            console.log(this.pos.y);
+            console.log("height");
+            console.log(height);
+            
+            if((this.velocity.x/this.velocity.y)>0){
+                this.maxVelocity =this.getMaxVelocity(directionX, -1*directionY);
+            }else{
+                this.maxVelocity =this.getMaxVelocity(-1*directionX, directionY);
+            }
+             
+             
+         }
      }
     update() {
         this.animationTimer += 1 / frameRate();
             
         if (!this.frozen) {
-            this.velocity.y = Smooth(this.velocity.y, this.maxVelocity.y, 4);
-            this.velocity.x = Smooth(this.velocity.x, this.maxVelocity.x, 4);
+            if(Math.sign(this.velocity.x)!=Math.sign(this.maxVelocity.x)){
+                this.velocity.x = Smooth(this.velocity.x, this.maxVelocity.x, 32);
+            }else{
+                this.velocity.x = Smooth(this.velocity.x, this.maxVelocity.x, 4);
+            }
+            if(Math.sign(this.velocity.y)!=Math.sign(this.maxVelocity.y)){
+                this.velocity.y = Smooth(this.velocity.y, this.maxVelocity.y, 32);
+            }else{
+                this.velocity.y = Smooth(this.velocity.y, this.maxVelocity.y, 4);
+            }
+            
+            
         } else {
             this.velocity.y = Smooth(this.velocity.y, 0, 12);
             this.velocity.x = Smooth(this.velocity.x, 0, 12);
@@ -113,38 +148,33 @@ class Duck extends Entity {
         
 
         //Check boundaries and change direction if duck can't escape
-        if(!this.canScape&&(this.pos.x<=(objSize*this.sizeModX/2) && this.directionX<0) || (this.pos.x>width-(objSize*this.sizeModX/2) && this.directionX>0)){
-            this.directionX=-this.directionX;
-           // this.velocity.x=this.directionX*this.velocity.x;
+        if(!this.canScape&&(this.pos.x<=(objSize*this.sizeModX/2) && this.velocity.x<0) || (this.pos.x>width-(objSize*this.sizeModX/2) && this.velocity.x>0)){
+            //this.directionX=-this.directionX;
+            this.velocity.x=0;
+            this.maxVelocity.x=-1*this.maxVelocity.x;
             this.scale.x = -this.scale.x;
-        }else{
-            // check if duck will turn direction randomly
-            if (random(0,1)>(0.99-0.001*round)){
-                this.directionX= -this.directionX;
-                this.scale.x = -this.scale.x;
-                // this.velocity.x=0;
-                this.maxVelocity = this.getMaxVelocity(1, 1);
-            }
         }
-        if(!this.canScape&&(this.pos.y<=objSize*this.sizeModY/2 && this.directionY<0) || (this.pos.y>height*spawnPosY-objSize*this.sizeModY/2 && this.directionY>0)){
-            this.directionY=-this.directionY;
-            //this.velocity.y=this.directionY*this.velocity.y;
-        }else{
-            if ((random(0,1)>0.98 && this.directionY>0)||(random(0,1)>(0.995-0.001*round))){
-                this.directionY= -this.directionY;  
-                this.maxVelocity = this.getMaxVelocity(1,1);
-                // this.velocity.y=0;
-            }
+        if(!this.canScape&&(this.pos.y<=objSize*this.sizeModY/2 && this.velocity.y<0) || (this.pos.y>height*spawnPosY-objSize*this.sizeModY/2 && this.velocity.y>0)){
+            //this.directionY=-this.directionY;
+            this.velocity.y=0;
+            this.maxVelocity.y=-1*this.maxVelocity.y;
         }
+
+        this.turnDirectionsRandomly();
 
         this.pos.add(this.directionX*this.velocity.x, this.directionY*this.velocity.y);
         if (this.pos.y < -objSize * this.sizeMod || this.pos.x > (width +objSize*this.sizeMod/2)|| this.pos.x < (-objSize * this.sizeMod/2)) {
             this.removable = true;
             this.outOfScreen = true;
         }
-
+        //Update scale 
+        if(this.velocity.x<0){
+            this.scale.x=-1;
+        }else{
+            this.scale.x=1;
+        }
         //Update the angle
-        this.rotation = this.directionX*Math.asin(this.velocity.y*this.directionY/(Math.sqrt(this.velocity.x*this.velocity.x+this.velocity.y*this.velocity.y)));
+        this.rotation = (this.velocity.x<0?-1:1)*Math.asin(this.velocity.y*this.directionY/(Math.sqrt(this.velocity.x*this.velocity.x+this.velocity.y*this.velocity.y)));
     }
 
     //override
@@ -164,7 +194,9 @@ class Duck extends Entity {
         let sizeAlertX =  Sinusoid(sizeX/2, 8, sizeX/8, this.animationTimer);
         let sizeAlertY = Sinusoid(sizeY/2, 8, sizeY/8, this.animationTimer);
 
-        this.img = imgBubble[this.type];
+        
+
+        this.img = imgDuck[this.type];
         if (this.frozen) {
             this.img = imgBubbleFrozen;
         }
@@ -182,7 +214,9 @@ class Duck extends Entity {
             image(imgAlertIcon, -sizeAlertX*3/8 ,(-sizeY/2-sizeAlertY), sizeAlertX, sizeAlertY);
         }
         image(this.img, -sizeX / 2, -sizeY / 2, sizeX, sizeY);
-        
+        let helmSizeX = sizeX/2;
+        let helmSizeY = sizeY/3;
+        //image(imgHelm, -0.02*sizeX, -0.45*sizeY, helmSizeX, helmSizeY);
         pop();
     }
 

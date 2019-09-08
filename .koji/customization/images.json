@@ -4,7 +4,7 @@
     "muteImage": "https://i.imgur.com/AR7C733.png",
     "lifeIcon": "https://images.koji-cdn.com/9e16d283-29d4-4751-9bcf-5916c4c14764/frame1.png",
     "background": "https://images.koji-cdn.com/9e16d283-29d4-4751-9bcf-5916c4c14764/bg2.png",
-    "duck": "https://images.koji-cdn.com/9e16d283-29d4-4751-9bcf-5916c4c14764/frame1.png",
+    "duck": "https://media.giphy.com/media/KGBxqL0SJVT1XzH2yl/source.gif",
     "duckSmall": "https://images.koji-cdn.com/9e16d283-29d4-4751-9bcf-5916c4c14764/tinychickencooked96x96.png",
     "popEffect": "https://images.koji-cdn.com/9e16d283-29d4-4751-9bcf-5916c4c14764/shot.png",
     "bubbleBomb": "https://images.koji-cdn.com/9e16d283-29d4-4751-9bcf-5916c4c14764/dogFlying.gif",
@@ -13,7 +13,8 @@
     "explosion": "https://i.imgur.com/AbPceWn.png",
     "ammoIcon": "https://images.koji-cdn.com/9e16d283-29d4-4751-9bcf-5916c4c14764/bullet.png",
     "alertIcon": "https://images.koji-cdn.com/9e16d283-29d4-4751-9bcf-5916c4c14764/exclamation2.png",
-    "shotEffect": "https://images.koji-cdn.com/9e16d283-29d4-4751-9bcf-5916c4c14764/shot2.png"
+    "shotEffect": "https://images.koji-cdn.com/9e16d283-29d4-4751-9bcf-5916c4c14764/shot2.png",
+    "helm": "https://images.koji-cdn.com/9e16d283-29d4-4751-9bcf-5916c4c14764/helm.png"
   },
   "@@editor": [
     {
@@ -104,6 +105,12 @@
           "key": "explosion",
           "name": "Explosion Effect",
           "description": "A particle effect after a bomb is popped. ",
+          "type": "image"
+        },
+        {
+          "key": "helm",
+          "name": "Helm",
+          "description": "A Helm Image to be put as duck equipment ",
           "type": "image"
         }
       ]
