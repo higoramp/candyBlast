@@ -13,6 +13,8 @@ class GameContainer extends Component {
     require('script-loader!app/entities.js');
     require('script-loader!app/utilities.js');
     require('script-loader!app/clickable.js');
+    require('script-loader!libs/p5.js/lib/p5.min.js');
+    require('script-loader!libs/p5.js/lib/addons/p5.sound.min.js');
     this.p5Game = new p5(null, document.getElementById('game-container'));
   }
 
