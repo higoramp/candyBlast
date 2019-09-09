@@ -92,9 +92,9 @@ class Duck extends Entity {
                 setTimeout(()=>{
                     this.alertMode = true;
                     this.canScape = true;
-                }, 5000);
+                }, timeToEscape);
             }
-        }, 10000);
+        }, timeToAlert);
     }
      getMaxVelocity(directionX, directionY){
          return createVector(random(directionX*minVelocityX*1.1**(round+2), directionX*maxVelocityX*1.1**(round+2)), 

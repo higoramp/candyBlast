@@ -34,7 +34,8 @@ let startingDucks = 3;
 let ducksIncrease = 3;
 let spawnPosY = 0.7;
 let startingLives;
-
+let timeToAlert;
+let timeToEscape;
 //===Score data
 let score = 0;
 let scoreGain;
@@ -137,6 +138,8 @@ function preload() {
     round = 0;
     ducksKilled = 0;
     spawnPosY = parseFloat(Koji.config.strings.spawnPosY) || spawnPosY;
+		timeToAlert = parseInt(Koji.config.strings.timeToAlert);
+		timeToEscape = parseInt(Koji.config.strings.timeToEscape);
 
 }
 function setup() {

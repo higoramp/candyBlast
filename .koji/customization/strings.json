@@ -20,7 +20,9 @@
     "startingDucks": "3",
     "ducksIncrease": "1",
     "startingBullets": "6",
-    "congratulationsText": "Well Done!"
+    "congratulationsText": "Well Done!",
+    "timeToAlert": "10000",
+    "timeToEscape": "5000"
   },
   "@@editor": [
     {
@@ -126,6 +128,18 @@
           "key": "ducksIncrease",
           "name": "Ducks Inscrease per Round",
           "description": "How much ducks will be added on next Round.",
+          "type": "text"
+        },
+        {
+          "key": "timeToAlert",
+          "name": "Time elapsed before ducks enter in Alert Mode",
+          "description": "Enter the time in Milliseconds. Alert mode is just before the ducks can escape.",
+          "type": "text"
+        },
+        {
+          "key": "timeToEscape",
+          "name": "Time elapsed after ducks enter in Alert Mode and can really escape",
+          "description": "Enter the time in Milliseconds. When a duck scape, the user looses one life",
           "type": "text"
         },
         {
