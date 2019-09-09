@@ -172,7 +172,7 @@ function setup() {
 
     gameBeginning = true;
 
-    if (Koji.config.sounds.backgroundMusic) sndMusic = loadSound(Koji.config.sounds.backgroundMusic, playMusic);
+    if (Koji.config.sounds.backgroundMusic) sndMusic = loadSound(Koji.config.sounds.backgroundMusic);
 
 }
 function resize(){
@@ -438,6 +438,7 @@ function init() {
     for (let i = 0; i < startingDucks; i++) {
         spawnDuck(0);
     }
+    playMusic();
 }
 let creatingRound = false;
 function newRound(){

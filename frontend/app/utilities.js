@@ -4,7 +4,7 @@
 
 
 function playMusic() {
-    if (sndMusic) {
+    if (sndMusic&&!sndMusic.isPlaying()) {
         sndMusic.setVolume(0.25);
         sndMusic.setLoop(true);
         sndMusic.play();
