@@ -13,13 +13,7 @@
     "highscoreGainedText": "New High Score!",
     "health": "3",
     "lives": "6",
-    "freezeText": "FREEZE",
     "scoreGain": "1",
-    "startingBubbles": "4",
-    "spawnFrequency": "20",
-    "bombFrequency": "1",
-    "iceFrequency": "1",
-    "bombText": "BOOM!",
     "leaderboardButtonText": "LEADERBOARD",
     "missText": "MISS",
     "roundText": "Next Round!",
@@ -93,21 +87,9 @@
           "type": "text"
         },
         {
-          "key": "freezeText",
-          "name": "Freeze Text",
-          "description": "Splash text when you pop a freezing bubble",
-          "type": "text"
-        },
-        {
           "key": "missText",
           "name": "Miss Text",
           "description": "Splash text when you miss a shot ",
-          "type": "text"
-        },
-        {
-          "key": "bombText",
-          "name": "Bomb Text",
-          "description": "Splash text when you pop a bomb",
           "type": "text"
         },
         {
@@ -132,24 +114,6 @@
           "key": "startingBullets",
           "name": "Starting Bullets",
           "description": "How many bullets play will have at the beginning (Integer)",
-          "type": "text"
-        },
-        {
-          "key": "spawnFrequency",
-          "name": "Bubble Frequency",
-          "description": "How frequently the bubbles spawn (Integer)",
-          "type": "text"
-        },
-        {
-          "key": "bombFrequency",
-          "name": "Bomb Frequency",
-          "description": "How frequently the bombs spawn (Integer)",
-          "type": "text"
-        },
-        {
-          "key": "iceFrequency",
-          "name": "Ice Frequency",
-          "description": "How frequently the ice spawns (Integer)",
           "type": "text"
         },
         {

@@ -7,10 +7,6 @@
     "duck": "https://media.giphy.com/media/KGBxqL0SJVT1XzH2yl/source.gif",
     "duckSmall": "https://images.koji-cdn.com/9e16d283-29d4-4751-9bcf-5916c4c14764/tinychickencooked96x96.png",
     "popEffect": "https://images.koji-cdn.com/9e16d283-29d4-4751-9bcf-5916c4c14764/shot.png",
-    "bubbleBomb": "https://images.koji-cdn.com/9e16d283-29d4-4751-9bcf-5916c4c14764/dogFlying.gif",
-    "bubbleIce": "https://i.imgur.com/XGRZwJV.png",
-    "bubbleFrozen": "https://i.imgur.com/j4H50i9.png",
-    "explosion": "https://i.imgur.com/AbPceWn.png",
     "ammoIcon": "https://images.koji-cdn.com/9e16d283-29d4-4751-9bcf-5916c4c14764/bullet.png",
     "alertIcon": "https://images.koji-cdn.com/9e16d283-29d4-4751-9bcf-5916c4c14764/exclamation2.png",
     "shotEffect": "https://images.koji-cdn.com/9e16d283-29d4-4751-9bcf-5916c4c14764/shot2.png",
@@ -66,24 +62,6 @@
           "type": "image"
         },
         {
-          "key": "bubbleBomb",
-          "name": "Bomb",
-          "description": "Destroys all other bubbles on screen. ",
-          "type": "image"
-        },
-        {
-          "key": "bubbleIce",
-          "name": "Freezing Bubble",
-          "description": "Freezes all other bubbles. ",
-          "type": "image"
-        },
-        {
-          "key": "bubbleFrozen",
-          "name": "Frozen Bubble",
-          "description": "",
-          "type": "image"
-        },
-        {
           "key": "duckSmall",
           "name": "Duck Pieces",
           "description": "Small pieces that appear after a duck is Killed.",
@@ -99,12 +77,6 @@
           "key": "popEffect",
           "name": "Bubble Pop Effect",
           "description": "A particle effect after the main bubble is popped. ",
-          "type": "image"
-        },
-        {
-          "key": "explosion",
-          "name": "Explosion Effect",
-          "description": "A particle effect after a bomb is popped. ",
           "type": "image"
         },
         {

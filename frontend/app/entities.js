@@ -197,9 +197,9 @@ class Duck extends Entity {
         
 
         this.img = imgDuck[this.type];
-        if (this.frozen) {
-            this.img = imgBubbleFrozen;
-        }
+        // if (this.frozen) {
+        //     this.img = imgBubbleFrozen;
+        // }
 
         //just for animate a little the alert
         if (this.alertMode){
@@ -301,14 +301,14 @@ class ShotEffect extends Entity {
     }
 }
 
-//Same as pop effect but an explosion instead
-class Explosion extends ShotEffect {
-    constructor(x, y, size) {
-        super(x, y);
-        this.img = imgExplosion;
-        this.rotation = random() * Math.PI;
-        this.maxSize = size * 3;
-        this.sizeMod = 0.1;
-        this.timer = 0.15;
-    }
-}
+// //Not using yet
+// class Explosion extends ShotEffect {
+//     constructor(x, y, size) {
+//         super(x, y);
+//         this.img = imgExplosion;
+//         this.rotation = random() * Math.PI;
+//         this.maxSize = size * 3;
+//         this.sizeMod = 0.1;
+//         this.timer = 0.15;
+//     }
+// }

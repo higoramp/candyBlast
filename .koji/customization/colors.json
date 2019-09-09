@@ -10,8 +10,6 @@
     "instructionsColor": "#D6F6FC",
     "buttonHoverColor": "#97E0EE",
     "buttonClickColor": "#ffffff",
-    "freezeColor": "#ffffff",
-    "bombTextColor": "#ED4871",
     "roundTextColor": "#c1f1be",
     "missTextColor": "#c03737"
   },
@@ -60,16 +58,6 @@
         {
           "key": "buttonClickColor",
           "name": "Button Click Color",
-          "type": "color"
-        },
-        {
-          "key": "freezeColor",
-          "name": "Freeze Color",
-          "type": "color"
-        },
-        {
-          "key": "bombTextColor",
-          "name": "Bomb Text Color",
           "type": "color"
         },
         {

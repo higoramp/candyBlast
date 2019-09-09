@@ -22,29 +22,22 @@ let lives;
 let numberDucks;
 let createdDucks;
 let ducksKilled;
-
-
-//===Score data
-let score = 0;
-let scoreGain;
-
-//===Data taken from Game Settings
-let startingLives;
-
-
-
 let minVelocityY = 1;
 let maxVelocityY = 3;
 
 let minVelocityX = 2;
 let maxVelocityX = 4;
 
-let spawnFrequency = 20;
+//===Data taken from Game Settings
+
 let startingDucks = 3;
 let ducksIncrease = 3;
-let bombFrequency = 5;
-let iceFrequency = 5;
 let spawnPosY = 0.7;
+let startingLives;
+
+//===Score data
+let score = 0;
+let scoreGain;
 
 
 //===Images
@@ -53,16 +46,15 @@ let imgLife;
 let imgBullet;
 let imgDuck = [];
 let imgHelm;
-let imgBubbleFrozen;
 let imgDuckParticle;
 let imgShotEffect;
-let imgExplosion;
+
 let alertIcon;
+
 //===Audio
 let sndMusic;
 let sndPop = [];
-let sndExplosion;
-let sndFreeze;
+let sndShot;
 let sndLoseLife;
 let alertSound;
 let soundEnabled = true;
@@ -112,13 +104,10 @@ function preload() {
     imgBullet = loadImage(Koji.config.images.ammoIcon);
     imgDuck[0] = loadImage(Koji.config.images.duck);
 
-    imgDuck[1] = loadImage(Koji.config.images.bubbleBomb);
-    imgDuck[2] = loadImage(Koji.config.images.bubbleIce);
-    imgBubbleFrozen = loadImage(Koji.config.images.bubbleFrozen);
     imgHelm = loadImage(Koji.config.images.helm);
     imgDuckParticle = loadImage(Koji.config.images.duckSmall);
     imgShotEffect = loadImage(Koji.config.images.shotEffect);
-    imgExplosion = loadImage(Koji.config.images.explosion);
+  
     imgAlertIcon = loadImage(Koji.config.images.alertIcon);
     firing = false;
     soundImage = loadImage(Koji.config.images.soundImage);
@@ -131,8 +120,7 @@ function preload() {
     if (Koji.config.sounds.pop1) sndPop[0] = loadSound(Koji.config.sounds.pop1);
     if (Koji.config.sounds.pop2) sndPop[1] = loadSound(Koji.config.sounds.pop2);
     if (Koji.config.sounds.pop3) sndPop[2] = loadSound(Koji.config.sounds.pop3);
-    if (Koji.config.sounds.explosion) sndExplosion = loadSound(Koji.config.sounds.explosion);
-    if (Koji.config.sounds.freeze) sndFreeze = loadSound(Koji.config.sounds.freeze);
+    if (Koji.config.sounds.shot) sndShot = loadSound(Koji.config.sounds.shot);
     if (Koji.config.sounds.loseLife) sndLoseLife = loadSound(Koji.config.sounds.loseLife);
     if (Koji.config.sounds.loseLife) alertSound = loadSound(Koji.config.sounds.alertSound);
 
@@ -141,7 +129,6 @@ function preload() {
     
     lives = startingLives;
     scoreGain = parseInt(Koji.config.strings.scoreGain);
-    spawnFrequency = parseInt(Koji.config.strings.spawnFrequency);
     startingDucks = parseInt(Koji.config.strings.startingDucks);
     startingBullets = parseInt(Koji.config.strings.startingBullets);
     numberDucks = startingDucks;
@@ -149,8 +136,6 @@ function preload() {
     ducksIncrease = parseInt(Koji.config.strings.ducksIncrease);
     round = 0;
     ducksKilled = 0;
-    bombFrequency = parseInt(Koji.config.strings.bombFrequency);
-    iceFrequency = parseInt(Koji.config.strings.iceFrequency);
     spawnPosY = parseFloat(Koji.config.strings.spawnPosY) || spawnPosY;
 
 }
@@ -345,34 +330,15 @@ function cleanup() {
             floatingTexts.push(new FloatingText(ducks[i].pos.x, ducks[i].pos.y, "+"+scoreGain, Koji.config.colors.roundTextColor, objSize, 0.7));
             ducksKilled++;
             
-            //Explosion pop
-            if (ducks[i].type == 1) {
-                popBubbles();
-                let popEffect = new Explosion(ducks[i].pos.x, ducks[i].pos.y, ducks[i].sizeMod);
-                shotEffects.push(popEffect);
+            let id = floor(random() * sndPop.length);
 
-                if (sndExplosion) {
-                    sndExplosion.setVolume(0.5);
-                    sndExplosion.play();
-                }
-            } else {
-                //Freeze pop
-                if (ducks[i].type == 2) {
-                    freezeBubbles();
-
-                    if (sndFreeze) sndFreeze.play();
-                } else {
-                    let id = floor(random() * sndPop.length);
-
-                    if (sndPop[id]) sndPop[id].play();
-                }
-                let shotEffect = new ShotEffect(ducks[i].pos.x, ducks[i].pos.y, ducks[i].sizeMod);
-                shotEffects.push(shotEffect);
-            }
+            if (sndPop[id]) sndPop[id].play();
+            
+            let shotEffect = new ShotEffect(ducks[i].pos.x, ducks[i].pos.y, ducks[i].sizeMod);
+              shotEffects.push(shotEffect);
+            
             nDucksShot++;
             
-
-
             ducks[i].removable = true;
         }
 
@@ -417,9 +383,9 @@ firing
         //Ingame
         if (!firing){ //Prevent accidental double click
             bullets--;
-            if (sndExplosion) {
-                    sndExplosion.setVolume(0.5);
-                    sndExplosion.play();
+            if (sndShot) {
+                    sndShot.setVolume(0.5);
+                    sndShot.play();
             }
             setTimeout(() => {
                 firing = false;
@@ -512,18 +478,6 @@ function createDucksRound(){
 function checkSpawn() {
 
 
-    // //Check bomb spawn
-    // let roll = random() * 100;
-    // if (roll < bombFrequency / 200 * objSize) {
-    //     spawnDuck(1);
-    // }
-
-    // //Check ice spawn
-    // roll = random() * 100;
-    // if (roll < iceFrequency / 200 * objSize) {
-    //     spawnDuck(2);
-    // }
-
     //If there are no ducks,  go to next round
     if (ducks.length < 1 && createdDucks>=numberDucks) {
         newRound();
@@ -538,20 +492,6 @@ function spawnDuck(type) {
     createdDucks++;
 }
 
-//Freeze all ducks
-function freezeBubbles() {
-    for (let i = 0; i < ducks.length; i++) {
-        if (ducks[i].pos.y > 0 && ducks[i].pos.y < height && ducks[i].type == 0) {
-            ducks[i].frozen = true;
-        }
-    }
-
-    let txt = Koji.config.strings.freezeText;
-    let size = floor(objSize * 3);
-
-    pushText(Koji.config.strings.freezeText, Koji.config.colors.freezeColor, size);
-}
-
 
 function pushText(text, color, size, timer=1, line=0){
     textSize(size);
@@ -562,23 +502,6 @@ function pushText(text, color, size, timer=1, line=0){
         textSize(size);
     }
     floatingTexts.push(new FloatingText(width / 2, height / 2 - objSize * 3 +size*line, text, color, size, timer));
-}
-//Pop all ducks
-function popBubbles() {
-    for (let i = 0; i < ducks.length; i++) {
-        ducks[i].popped = true;
-    }
-
-    let txt = Koji.config.strings.freezeText;
-    let size = floor(objSize * 3);
-    textSize(size);
-
-    //Resize until it fits the screen
-    while (textWidth(txt) > width * 0.9) {
-        size *= 0.9;
-        textSize(size);
-    }
-    floatingTexts.push(new FloatingText(width / 2, height / 2 - objSize * 7, Koji.config.strings.bombText, Koji.config.colors.bombTextColor, size));
 }
 
 //===Call this when a lose life event should trigger
