@@ -16,11 +16,11 @@ Things that can be customized:
 - Instructions
 - Play Button
 - Score and High Score
-- Freeze Text 
-- Bomb Text
+- Miss Text 
+- Round Text
 
 ## Images
-- Background (optional)
+- Background
 - Life Icon
 - Duck Sprite
 - Ducks particles
@@ -38,12 +38,15 @@ Things that can be customized:
 - All game text
 - Lives
 - Starting ducks
-- Bomb frequency
+- Ducks increase
+- Time to escape
 - Score gain
 
 ## NOTES
 
 Game made using has start the Pop the Bubble game by [Svarog1389](https://withkoji.com/~Svarog1389)
+
+Duck sprite by bevouliin.com
 
 ## Support and suggestions
 Please feel free to [Contact me ](https://withkoji.com/~higoramp) if you have any suggestions!   
