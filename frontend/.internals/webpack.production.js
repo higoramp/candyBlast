@@ -149,7 +149,7 @@ module.exports = {
     }),
   ],
   resolve: {
-    modules: ['node_modules', 'frontend'],
+    modules: ['node_modules', 'frontend', 'libs'],
     extensions: ['.js', '.jsx', '.react.js'],
     mainFields: ['browser', 'jsnext:main', 'main'],
   }

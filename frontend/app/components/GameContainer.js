@@ -6,6 +6,7 @@ import PropTypes from 'prop-types';
 
 const { p5 } = window;
 
+
 class GameContainer extends Component {
   componentDidMount() {
     require('script-loader!app/index.js');
