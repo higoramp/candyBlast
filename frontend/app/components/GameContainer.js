@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 
 
 
+
 class GameContainer extends Component {
   componentDidMount() {
     require('script-loader!app/p5.min.js');1
@@ -11,6 +12,7 @@ class GameContainer extends Component {
     require('script-loader!app/entities.js');
     require('script-loader!app/utilities.js');
     require('script-loader!app/clickable.js');
+    new p5(null, 'game-container');
 
   }
 

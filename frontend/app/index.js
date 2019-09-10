@@ -149,6 +149,9 @@ function setup() {
     height = window.innerHeight;
 
     window.addEventListener('resize', resize, false);
+    window.addEventListener('mousedown', e => {
+    touchStarted();
+});
         
     //===How much of the screen should the game take
     let sizeModifier = 0.75;
@@ -156,7 +159,9 @@ function setup() {
         sizeModifier = 1;
     }
 
-    createCanvas(width, height);
+    let canvas=createCanvas(width, height);
+
+
     //imgDuck[0].delay(250);
     //===Determine basic object size depending on size of the screen
     objSize = floor(min(floor(width / gameSize), floor(height / gameSize)) * sizeModifier);
@@ -375,8 +380,8 @@ function cleanup() {
 //===Handle input
 
 function touchStarted() {
-
-firing
+    console.log("Touched");
+    console.log(mouseX+" : "+mouseY);
     if (soundButton && soundButton.checkClick()) {
         toggleSound();
         return;
