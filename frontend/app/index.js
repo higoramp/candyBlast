@@ -5,11 +5,9 @@ let gameBeginning = true; //Should be true only before the user starts the game 
 
 //===Game objects
 //Declare game objects here like player, enemies etc
-let ducks = [];
-let duckParticles = [];
-let shotEffects = [];
+let balloons = [];
+let balloonsParticles = [];
 
-let bullets = 6;
 
 //===Buttons
 let playButton;
@@ -17,47 +15,37 @@ let soundButton;
 let leaderboardButton;
 
 //Control game variables
-let firing = false;
-let lives;
-let numberDucks;
-let createdDucks;
-let ducksKilled;
-let minVelocityY = 1;
-let maxVelocityY = 3;
+let minVelocityY = 0;
+let maxVelocityY = 1;
 
-let minVelocityX = 2;
-let maxVelocityX = 4;
+let minVelocityX = 0;
+let maxVelocityX = 1;
+
+let phase = 1;
+
+let clicksAvailable = 1;
+
+let isClicking = false;
+
+let rowSize;
+let columnSize;
+
 
 //===Data taken from Game Settings
 
-let startingDucks = 3;
-let ducksIncrease = 3;
-let spawnPosY = 0.7;
-let startingLives;
-let timeToAlert;
-let timeToEscape;
-//===Score data
-let score = 0;
-let scoreGain;
 
+//===Score data
 
 //===Images
 let imgBackground;
-let imgLife;
-let imgBullet;
-let imgDuck = [];
-let imgHelm;
-let imgDuckParticle;
-let imgShotEffect;
 
-let alertIcon;
+let imgBalloon = [];
+let imgBalloonParticle;
 
 //===Audio
 let sndMusic;
 let sndPop = [];
-let sndShot;
-let sndLoseLife;
-let alertSound;
+
 let soundEnabled = true;
 let canMute = true;
 
@@ -76,9 +64,7 @@ let gameSize = 18;
 let isMobile = false;
 let touching = false;
 
-let currentGunArea = 1.5;
 
-let round = 0;
 
 
 //===Load this before starting the game
@@ -92,8 +78,6 @@ function preload() {
     let newStr = myFont.replace("+", " ");
     myFont = newStr;
     //===
-    console.log("TESTE: ");
-    console.log(Koji.config.strings.testeArray);
     //===Load images
 
     //Load background if there's any
@@ -101,45 +85,22 @@ function preload() {
         imgBackground = loadImage(Koji.config.images.background);
     }
 
-    imgLife = loadImage(Koji.config.images.lifeIcon);
-    imgBullet = loadImage(Koji.config.images.ammoIcon);
-    imgDuck[0] = loadImage(Koji.config.images.duck);
+    imgBalloon[0] = loadImage(Koji.config.images.duck);
 
-    imgHelm = loadImage(Koji.config.images.helm);
-    imgDuckParticle = loadImage(Koji.config.images.duckSmall);
-    imgShotEffect = loadImage(Koji.config.images.shotEffect);
+    imgBalloonParticle = loadImage(Koji.config.images.duckSmall);
   
-    imgAlertIcon = loadImage(Koji.config.images.alertIcon);
-    firing = false;
     soundImage = loadImage(Koji.config.images.soundImage);
     muteImage = loadImage(Koji.config.images.muteImage);
 
     soundFormats('wav', 'mp3');
 
-    //===Load Sounds
+    //===Load Soundsfiring
 
     if (Koji.config.sounds.pop1) sndPop[0] = loadSound(Koji.config.sounds.pop1);
     if (Koji.config.sounds.pop2) sndPop[1] = loadSound(Koji.config.sounds.pop2);
     if (Koji.config.sounds.pop3) sndPop[2] = loadSound(Koji.config.sounds.pop3);
     if (Koji.config.sounds.shot) sndShot = loadSound(Koji.config.sounds.shot);
-    if (Koji.config.sounds.loseLife) sndLoseLife = loadSound(Koji.config.sounds.loseLife);
-    if (Koji.config.sounds.loseLife) alertSound = loadSound(Koji.config.sounds.alertSound);
 
-    //===Load settings from Game Settings
-    startingLives = parseInt(Koji.config.strings.lives);
-    
-    lives = startingLives;
-    scoreGain = parseInt(Koji.config.strings.scoreGain);
-    startingDucks = parseInt(Koji.config.strings.startingDucks);
-    startingBullets = parseInt(Koji.config.strings.startingBullets);
-    numberDucks = startingDucks;
-    createdDucks = 0;
-    ducksIncrease = parseInt(Koji.config.strings.ducksIncrease);
-    round = 0;
-    ducksKilled = 0;
-    spawnPosY = parseFloat(Koji.config.strings.spawnPosY) || spawnPosY;
-		timeToAlert = parseInt(Koji.config.strings.timeToAlert);
-		timeToEscape = parseInt(Koji.config.strings.timeToEscape);
 
 }
 function setup() {
@@ -149,9 +110,10 @@ function setup() {
     height = window.innerHeight;
 
     window.addEventListener('resize', resize, false);
+    //Dont know Why touchStarted is not called on firefox
     window.addEventListener('mousedown', e => {
-    touchStarted();
-});
+        touchStarted();
+    });
         
     //===How much of the screen should the game take
     let sizeModifier = 0.75;
@@ -161,9 +123,8 @@ function setup() {
 
     let canvas=createCanvas(width, height);
 
-
-    //imgDuck[0].delay(250);
-    //===Determine basic object size depending on size of the screen
+    imgBalloon[0].delay(500);
+    
     objSize = floor(min(floor(width / gameSize), floor(height / gameSize)) * sizeModifier);
     
     isMobile = detectMobile();
@@ -255,24 +216,19 @@ function draw() {
 
     } else {
 
-
         //Update and render all game objects here
+        checkPhase();
 
-        checkSpawn();
-
-        for (let i = 0; i < ducks.length; i++) {
-            ducks[i].update();
-            ducks[i].render();
+        for (let i = 0; i < balloons.length; i++) {
+            balloons[i].update();
+            balloons[i].render();
         }
 
-        for (let i = 0; i < shotEffects.length; i++) {
-            shotEffects[i].update();
-            shotEffects[i].render();
-        }
 
-        for (let i = 0; i < duckParticles.length; i++) {
-            duckParticles[i].update();
-            duckParticles[i].render();
+
+        for (let i = 0; i < balloonsParticles.length; i++) {
+            balloonsParticles[i].update();
+            balloonsParticles[i].render();
         }
 
         //===Update all floating text objects
@@ -281,30 +237,15 @@ function draw() {
             floatingTexts[i].render();
         }
 
-        //===Ingame UI
-
         //===Score draw
-        let scoreX = width - objSize / 2;
-        let scoreY = objSize / 3;
+        let clicksX = width - objSize / 2;
+        let clicksY = objSize / 3;
         textSize(objSize * 2);
         fill(Koji.config.colors.scoreColor);
         textAlign(RIGHT, TOP);
-        text(score, scoreX, scoreY);
+        text(clicksAvailable, clicksX, clicksY);
 
-        //Lives draw
-        let lifeSize = objSize;
-        for (let i = 0; i < lives; i++) {
-            image(imgLife, lifeSize / 2 + lifeSize * i, lifeSize / 2, lifeSize, lifeSize);
-        }
-
-        // //Bullets draw
-        // let ratio = imgBullet.height/imgBullet.width;
-        // let bulletSize = objSize;
         
-        // for (let i = 0; i < bullets; i++) {
-        //     image(imgBullet, bulletSize / 2 , height - bulletSize*ratio*i - bulletSize*3 / 2  , bulletSize, bulletSize);
-        // }
-
         cleanup();
 
     }
@@ -322,97 +263,75 @@ function cleanup() {
         }
     }
 
-    let nDucksShot =0;
     //Check to see if a Duck is popped
-    for (let i = 0; i < ducks.length; i++) {
-        if (ducks[i].popped) {
+    for (let i = 0; i < balloons.length; i++) {
+        if (balloons[i].popped) {
 
-            let particleCount = random(3, 8);
-            for (let j = 0; j < particleCount; j++) {
-                let pos = createVector(ducks[i].pos.x + objSize * random(-0.5, 0.5) * ducks[i].sizeMod / 2, ducks[i].pos.y + objSize * random(-0.5, 0.5) * ducks[i].sizeMod / 2);
-                let particle = new DuckParticle(pos.x, pos.y);
-                particle.velocity.x = random(0.2, 0.4) * objSize * Math.sign(pos.x - ducks[i].pos.x);
-                duckParticles.push(particle);
-                
-            }
-            floatingTexts.push(new FloatingText(ducks[i].pos.x, ducks[i].pos.y, "+"+scoreGain, Koji.config.colors.roundTextColor, objSize, 0.7));
-            ducksKilled++;
+            //Create Particles
+            let pos = createVector(balloons[i].pos.x , balloons[i].pos.y);
+               
+
+            balloonsParticles.push(new BalloonParticle(pos.x, pos.y, balloons[i].type, 1, 0));
+            balloonsParticles.push(new BalloonParticle(pos.x, pos.y, balloons[i].type, -1, 0));
+            balloonsParticles.push(new BalloonParticle(pos.x, pos.y, balloons[i].type, 0, 1));
+            balloonsParticles.push(new BalloonParticle(pos.x, pos.y, balloons[i].type, 0, -1));
             
+           
             let id = floor(random() * sndPop.length);
 
             if (sndPop[id]) sndPop[id].play();
             
-            let shotEffect = new ShotEffect(ducks[i].pos.x, ducks[i].pos.y, ducks[i].sizeMod);
-              shotEffects.push(shotEffect);
-            
-            nDucksShot++;
-            
-            ducks[i].removable = true;
+            balloons[i].removable = true;
         }
 
-        if(nDucksShot>0){
-            score += scoreGain*nDucksShot;
-            
+      
+        if (balloons[i].outOfScreen) {
+            //remove?
         }
 
-        if (ducks[i].outOfScreen) {
-            loseLife();
-        }
-
-        if (ducks[i].removable) {
-            ducks.splice(i, 1);
+        if (balloons[i].removable) {
+            balloons.splice(i, 1);
         }
     }
 
-    for (let i = 0; i < duckParticles.length; i++) {
-        if (duckParticles[i].removable) {
-            duckParticles.splice(i, 1);
+    for (let i = 0; i < balloonsParticles.length; i++) {
+        if (balloonsParticles[i].removable) {
+            balloonsParticles.splice(i, 1);
         }
     }
 
-    for (let i = 0; i < shotEffects.length; i++) {
-        if (shotEffects[i].removable) {
-            shotEffects.splice(i, 1);
-        }
-    }
+    
 }
 
 //===Handle input
 
 function touchStarted() {
-    console.log("Touched");
-    console.log(mouseX+" : "+mouseY);
+
     if (soundButton && soundButton.checkClick()) {
         toggleSound();
         return;
     }
-    let gotShot = false;
+
     if (!gameOver && !gameBeginning) {
         //Ingame
-        if (!firing){ //Prevent accidental double click
-            bullets--;
+        if (!isClicking){ //Prevent accidental double click
             if (sndShot) {
                     sndShot.setVolume(0.5);
                     sndShot.play();
+                    clicksAvailable--;
             }
             setTimeout(() => {
-                firing = false;
+                isClicking = false;
             }, 100);
         }
-        for (let i = 0; i < ducks.length; i++) {
-            if (ducks[i].checkClick()) {
-                ducks[i].popped = true;
-                gotShot = true;
+        for (let i = 0; i < balloons.length; i++) {
+            if (balloons[i].checkClick()) {
+                balloons[i].popped = true;
                 break;
             }
         }
-        if(!gotShot&&!firing){
-            
-            floatingTexts.push(new FloatingText(mouseX, mouseY-objSize*2,Koji.config.strings.missText , Koji.config.colors.missTextColor, objSize, 0.5));
-            let shotEffect = new ShotEffect(mouseX - objSize/12, mouseY-objSize/12, objSize/12);
-                shotEffects.push(shotEffect);
-        }
-        firing = true;
+        
+        isClicking = true;
     }
 }
 
@@ -431,74 +350,35 @@ function touchEnded() {
 function init() {
     gameOver = false;
 
-    score = 0;
-    lives = startingLives;
 
     floatingTexts = [];
 
-    ducks = [];
-    duckParticles = [];
-    shotEffects = [];
+    balloons = [];
+    balloonsParticles = [];
 
-    for (let i = 0; i < startingDucks; i++) {
-        spawnDuck(0);
-    }
+    columnSize = 50;
+    rowSize =50;
+    //LoadPhase
+
     playMusic();
-}
-let creatingRound = false;
-function newRound(){
-    
-    
-    if (!creatingRound){
-        if (ducksKilled>=(createdDucks-1)){
-          console.log(ducksKilled +": "+createdDucks);
-          pushText(Koji.config.strings.congratulationsText, Koji.config.colors.roundTextColor, objSize*2, 2);
-        }
-        setTimeout(()=>{
-              pushText(Koji.config.strings.roundText, Koji.config.colors.roundTextColor, objSize*2, 2);
-              //Prints the round
-              //Since is zero based AND have not yet updated...+2
-              pushText(round+2, Koji.config.colors.roundTextColor, objSize*2, 2, 1);
-                setTimeout(() => {
-                            round++;
-                            numberDucks = floor( startingDucks + ducksIncrease * round);
-                            bullets += numberDucks*1.5;
-                            createdDucks = 0;
-                            creatingRound = false;
-                            ducksKilled=0;
-                        }, 2000);
+createBalloon(0, 1, 1);
 
-        }, 2500);
-      
-    }
-    creatingRound = true;
-   
+createBalloon(0, 2, 2);
+createBalloon(0, 2, 4);
+
+}
+
+
+function checkPhase() {
+    
+
     
 }
-function createDucksRound(){
-    //will create Ducks??
-    if (random(0, 1)>0.95 && createdDucks<numberDucks){
-        let n = (numberDucks - createdDucks)>=2?Math.round(random(1,2)):1;
-        for (let i = 0; i < n; i++) {
-            spawnDuck(0);
-        }
-    }
-}
-function checkSpawn() {
 
+function createBalloon(type, row, column) {
+    let pos = createVector(row*rowSize, column*columnSize);
+    balloons.push(new Balloon(pos.x, pos.y, type));
 
-    //If there are no ducks,  go to next round
-    if (ducks.length < 1 && createdDucks>=numberDucks) {
-        newRound();
-    }
-    //Create the ducks for round
-    createDucksRound();
-}
-
-function spawnDuck(type) {
-    let pos = createVector(random(objSize, width - objSize), parseInt(height*spawnPosY));
-    ducks.push(new Duck(pos.x, pos.y, type));
-    createdDucks++;
 }
 
 
@@ -513,20 +393,7 @@ function pushText(text, color, size, timer=1, line=0){
     floatingTexts.push(new FloatingText(width / 2, height / 2 - objSize * 3 +size*line, text, color, size, timer));
 }
 
-//===Call this when a lose life event should trigger
-function loseLife() {
-    lives--;
-    if (sndLoseLife) sndLoseLife.play();
-    if (lives <= 0) {
-        gameOver = true;
-        round=0;
 
-        if (score > 0) {
-            submitScore();
-        }
-
-    }
-}
 
 //===Floating text used for score
 function FloatingText(x, y, txt, color, size, timer=1) {

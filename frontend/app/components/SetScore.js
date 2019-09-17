@@ -1,6 +1,6 @@
 import { h, Component } from 'preact';
 import PropTypes from 'prop-types';
-import Koji from 'koji-tools';
+import Koji from '@withkoji/vcc';
 
 class SetScore extends Component {
     static propTypes = {

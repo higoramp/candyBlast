@@ -6,8 +6,8 @@ import PropTypes from 'prop-types';
 
 class GameContainer extends Component {
   componentDidMount() {
-    require('script-loader!app/p5.min.js');1
-    require('script-loader!app/p5.sound.min.js');
+    require('script-loader!@higoramp/p5/lib/p5.min.js');1
+    require('script-loader!@higoramp/p5/lib/addons/p5.sound.min.js');
     require('script-loader!app/index.js');
     require('script-loader!app/entities.js');
     require('script-loader!app/utilities.js');

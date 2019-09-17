@@ -1,5 +1,5 @@
 import { h, render } from 'preact';
-import Koji from 'koji-tools';
+import Koji from '@withkoji/vcc';
 import './leaderboardStyles.css';
 import './index.css';
 //import * as p5 from  '../libs/p5.js/lib/p5.min.js';

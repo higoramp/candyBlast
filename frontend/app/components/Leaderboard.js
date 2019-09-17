@@ -1,5 +1,5 @@
 import { h, Component } from 'preact';
-import Koji from 'koji-tools';
+import Koji from '@withkoji/vcc';
 
 class Leaderboard extends Component {
   state = {
