@@ -1,0 +1,35 @@
+{
+  "levels": {
+    "levelsMap": "[\n[0,1,0,0,0],\n[0,1,0,0,0],\n[0,1,0,0,0],\n[0,1,0,0,0],\n[0,1,0,0,0],\n[0,1,0,0,0]\n]",
+    "columns": "5",
+    "rows": "6"
+  },
+  "@@editor": [
+    {
+      "key": "levels",
+      "name": "Levels",
+      "icon": "✍",
+      "source": "levels.json",
+      "fields": [
+        {
+          "key": "columns",
+          "name": "Number of Columns",
+          "description": "The number of objects in the horizontal",
+          "type": "text"
+        },
+        {
+          "key": "rows",
+          "name": "Number of Rows",
+          "description": "The number of objects in the vertical",
+          "type": "text"
+        },
+        {
+          "key": "levelsMap",
+          "name": "Levels of game",
+          "description": "Write inside the levels following the template format, where -1 is for no object and 0, 1, 2, 3 are for type",
+          "type": "textarea"
+        }
+      ]
+    }
+  ]
+}

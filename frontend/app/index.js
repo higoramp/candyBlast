@@ -7,6 +7,7 @@ let gameBeginning = true; //Should be true only before the user starts the game 
 //Declare game objects here like player, enemies etc
 let balloons = [];
 let balloonsParticles = [];
+let popEffects = [];
 
 
 //===Buttons
@@ -21,11 +22,17 @@ let maxVelocityY = 1;
 let minVelocityX = 0;
 let maxVelocityX = 1;
 
+let marginH = 50;
+let marginV = 50;
+
 let phase = 1;
 
 let clicksAvailable = 1;
 
 let isClicking = false;
+
+let nColumns;
+let nRows;
 
 let rowSize;
 let columnSize;
@@ -41,6 +48,7 @@ let imgBackground;
 
 let imgBalloon = [];
 let imgBalloonParticle;
+let imgPopEffect;
 
 //===Audio
 let sndMusic;
@@ -85,9 +93,14 @@ function preload() {
         imgBackground = loadImage(Koji.config.images.background);
     }
 
-    imgBalloon[0] = loadImage(Koji.config.images.duck);
+    imgBalloon[0] = loadImage(Koji.config.images.candy1);
+    imgBalloon[1] = loadImage(Koji.config.images.candy2);
+    imgBalloon[2] = loadImage(Koji.config.images.candy3);
+    imgBalloon[3] = loadImage(Koji.config.images.candy4);
 
     imgBalloonParticle = loadImage(Koji.config.images.duckSmall);
+
+    imgPopEffect = loadImage(Koji.config.images.popEffect);
   
     soundImage = loadImage(Koji.config.images.soundImage);
     muteImage = loadImage(Koji.config.images.muteImage);
@@ -100,6 +113,13 @@ function preload() {
     if (Koji.config.sounds.pop2) sndPop[1] = loadSound(Koji.config.sounds.pop2);
     if (Koji.config.sounds.pop3) sndPop[2] = loadSound(Koji.config.sounds.pop3);
     if (Koji.config.sounds.shot) sndShot = loadSound(Koji.config.sounds.shot);
+    //Background sound
+    if (Koji.config.sounds.backgroundMusic) sndMusic = loadSound(Koji.config.sounds.backgroundMusic);
+
+    //COlumns and rows
+    nColumns = parseInt(Koji.config.levels.columns);
+    nRows = parseInt(Koji.config.levels.rows);
+
 
 
 }
@@ -114,7 +134,10 @@ function setup() {
     window.addEventListener('mousedown', e => {
         touchStarted();
     });
+    
+    //LoadPhase
         
+
     //===How much of the screen should the game take
     let sizeModifier = 0.75;
     if (height > width) {
@@ -123,10 +146,15 @@ function setup() {
 
     let canvas=createCanvas(width, height);
 
-    imgBalloon[0].delay(500);
     
     objSize = floor(min(floor(width / gameSize), floor(height / gameSize)) * sizeModifier);
     
+    columnSize = (width-2*marginH)/nColumns;
+    rowSize =(height-2*marginV)/nRows;
+
+    console.log(columnSize);
+    console.log(rowSize);
+
     isMobile = detectMobile();
 
     textFont(myFont); //set our font
@@ -138,7 +166,7 @@ function setup() {
 
     gameBeginning = true;
 
-    if (Koji.config.sounds.backgroundMusic) sndMusic = loadSound(Koji.config.sounds.backgroundMusic);
+   
 
 }
 function resize(){
@@ -237,6 +265,13 @@ function draw() {
             floatingTexts[i].render();
         }
 
+        //Update pop Effects
+         //===Update all floating text objects
+        for (let i = 0; i < popEffects.length; i++) {
+            popEffects[i].update();
+            popEffects[i].render();
+        }
+        
         //===Score draw
         let clicksX = width - objSize / 2;
         let clicksY = objSize / 3;
@@ -266,16 +301,6 @@ function cleanup() {
     //Check to see if a Duck is popped
     for (let i = 0; i < balloons.length; i++) {
         if (balloons[i].popped) {
-
-            //Create Particles
-            let pos = createVector(balloons[i].pos.x , balloons[i].pos.y);
-               
-
-            balloonsParticles.push(new BalloonParticle(pos.x, pos.y, balloons[i].type, 1, 0));
-            balloonsParticles.push(new BalloonParticle(pos.x, pos.y, balloons[i].type, -1, 0));
-            balloonsParticles.push(new BalloonParticle(pos.x, pos.y, balloons[i].type, 0, 1));
-            balloonsParticles.push(new BalloonParticle(pos.x, pos.y, balloons[i].type, 0, -1));
-            
            
             let id = floor(random() * sndPop.length);
 
@@ -300,6 +325,12 @@ function cleanup() {
         }
     }
 
+    for (let i = 0; i < popEffects.length; i++) {
+        if (popEffects[i].removable) {
+            popEffects.splice(i, 1);
+        }
+    }
+
     
 }
 
@@ -318,18 +349,21 @@ function touchStarted() {
             if (sndShot) {
                     sndShot.setVolume(0.5);
                     sndShot.play();
+                    
+            }
+            
+            for (let i = 0; i < balloons.length; i++) {
+                if (balloons[i].checkClick()) {
+                    balloons[i].popIt();
                     clicksAvailable--;
+                    break;
+                }
             }
             setTimeout(() => {
                 isClicking = false;
             }, 100);
         }
-        for (let i = 0; i < balloons.length; i++) {
-            if (balloons[i].checkClick()) {
-                balloons[i].popped = true;
-                break;
-            }
-        }
+        
         
         isClicking = true;
     }
@@ -356,16 +390,15 @@ function init() {
     balloons = [];
     balloonsParticles = [];
 
-    columnSize = 50;
-    rowSize =50;
-    //LoadPhase
+ 
 
     playMusic();
+createBalloon(1, 0, 0);
 createBalloon(0, 1, 1);
 
 createBalloon(0, 2, 2);
 createBalloon(0, 2, 4);
-
+createBalloon(2, 5, 4);
 }
 
 
@@ -376,8 +409,10 @@ function checkPhase() {
 }
 
 function createBalloon(type, row, column) {
-    let pos = createVector(row*rowSize, column*columnSize);
+    let pos = createVector(column*columnSize+marginH+columnSize/2, row*rowSize+marginV+rowSize/2);
     balloons.push(new Balloon(pos.x, pos.y, type));
+
+    console.log("BAlloon at: "+pos.x+":"+pos.y);
 
 }
 

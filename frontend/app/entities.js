@@ -65,7 +65,7 @@ class Balloon extends Entity {
         super(x, y);
         this.type = type;
         this.img = imgBalloon[type];
-        this.sizeMod = (type+4)/2;
+        this.sizeMod = this.getSizeMod(type);
         this.sizeModX = this.sizeMod;
         this.sizeModY = this.sizeMod;
         this.popped = false;
@@ -74,8 +74,12 @@ class Balloon extends Entity {
 
     update() {
         this.animationTimer += 1 / frameRate();
+        this.checkCollisionWith();
     }
 
+    getSizeMod(type){
+        return  6/(2+type);
+    }
     //override
     render() {
         let sizeModX = this.sizeModX;
@@ -89,8 +93,6 @@ class Balloon extends Entity {
         let sizeY = objSize * sizeModY;
 
         this.img = imgBalloon[this.type];
-        console.log("Render Ballooon"+this.pos.x+" - "+ this.pos.y);
-        console.log(objSize+ " - "+ sizeModX);
         push();
         translate(this.pos.x, this.pos.y);
         scale(this.scale.x, this.scale.y);
@@ -100,6 +102,37 @@ class Balloon extends Entity {
         pop();
     }
 
+    checkCollisionWith(){
+        for(let particle of balloonsParticles){
+            if(particle.collisionWith(this)){
+                particle.removable = true;
+                this.popIt();
+            }
+        }
+    }
+    updateImg(){
+        this.img= imgBalloon[this.type];
+        this.sizeMod = this.getSizeMod(this.type);
+        this.sizeModX=this.sizeMod;
+        this.sizeModY=this.sizeMod;
+    }
+    popIt(){
+        if(this.type<=0){
+           
+            this.popped =true;
+            popEffects.push(new PopEffect(this.pos.x, this.pos.y, this.sizeMod, ()=> {
+                balloonsParticles.push(new BalloonParticle(this.pos.x, this.pos.y, this.type, 1, 0));
+                balloonsParticles.push(new BalloonParticle(this.pos.x, this.pos.y, this.type, 0, 1));
+                balloonsParticles.push(new BalloonParticle(this.pos.x, this.pos.y, this.type, -1, 0));
+                balloonsParticles.push(new BalloonParticle(this.pos.x, this.pos.y, this.type, 0, -1));
+            }));
+            
+        }else{
+            this.type--;
+        }
+        this.updateImg();
+        
+    }
     checkClick() {
         if (mouseX >= this.pos.x - (objSize * this.sizeMod / 2) &&
             mouseX <= this.pos.x + (objSize * this.sizeMod / 2) &&
@@ -117,10 +150,11 @@ class BalloonParticle extends Entity {
     constructor(x, y, type, directionX, directionY) {
         super(x, y);
         this.img = imgBalloon[type];
-        this.minSize = 0.5
-        this.sizeMod = 1;
+        this.maxSize = 0.6;
+        this.sizeMod = 0.1;
         this.maxVelocity = createVector(directionX*maxVelocityX, directionY*maxVelocityY);
         this.velocity = createVector(directionX*minVelocityX, directionY*minVelocityY);
+        this.animationTimer=0;
     }
 
 
@@ -130,41 +164,51 @@ class BalloonParticle extends Entity {
 
         this.pos.add(this.velocity.x, this.velocity.y);
 
-        this.timer -= 1 / frameRate();
+        this.animationTimer += 1 / frameRate();
 
         
-        this.sizeMod = Smooth(this.sizeMod, this.minSize, 4);
+        this.sizeMod = Smooth(this.sizeMod, this.maxSize, 18);
        
 
         //Check if particle is out of screen
         if (this.pos.x <0 || this.pos.x>width ||this.pos.y<0 || this.pos.y>height) {
+            console.log("remove particle");
             this.removable = true;
         }
     }
 
     //override
     render() {
-        let size = objSize * this.sizeMod;
 
-        console.log("RENDER PARTICLE");
-        console.log(size);
+        let sizeModX = this.sizeMod;
+        let sizeModY = this.sizeMod;
+
+        //Just for animation effect
+        sizeModX = Sinusoid(this.sizeMod, 4, 0.1, this.animationTimer);
+        sizeModY = Cosine(this.sizeMod, 4, 0.1, this.animationTimer);
+    
+        let sizeX = objSize * sizeModX;
+        let sizeY = objSize * sizeModY;
+
+
         push();
         translate(this.pos.x, this.pos.y);
         scale(this.scale.x, this.scale.y);
-        image(this.img, -size / 2, -size / 2, size, size);
+        image(this.img, -sizeX / 2, -sizeY / 2, sizeX, sizeY);
         pop();
     }
 }
 
 //A quick effect that spawns for a moment after popping a duck
-class ShotEffect extends Entity {
-    constructor(x, y, size) {
+class PopEffect extends Entity {
+    constructor(x, y, size, callback) {
         super(x, y);
-        this.img = imgShotEffect;
+        this.img = imgPopEffect;
         this.rotation = random() * Math.PI;
         this.maxSize = size;
         this.sizeMod = 0.1;
         this.timer = 0.15;
+        this.callback = callback;
     }
 
     update() {
@@ -175,6 +219,7 @@ class ShotEffect extends Entity {
 
         if (this.timer <= 0) {
             this.removable = true;
+            this.callback();
         }
     }
 }

@@ -2,15 +2,19 @@
   "images": {
     "soundImage": "https://i.imgur.com/rtFppa8.png",
     "muteImage": "https://i.imgur.com/AR7C733.png",
-    "lifeIcon": "https://images.koji-cdn.com/9e16d283-29d4-4751-9bcf-5916c4c14764/frame1.png",
-    "background": "https://images.koji-cdn.com/9e16d283-29d4-4751-9bcf-5916c4c14764/bg2.png",
-    "duck": "https://media.giphy.com/media/KGBxqL0SJVT1XzH2yl/source.gif",
-    "duckSmall": "https://images.koji-cdn.com/9e16d283-29d4-4751-9bcf-5916c4c14764/tinychickencooked96x96.png",
-    "popEffect": "https://images.koji-cdn.com/9e16d283-29d4-4751-9bcf-5916c4c14764/shot.png",
+    "lifeIcon": "https://images.koji-cdn.com/6c0ce1e8-94ee-4b62-86f9-5289a3a81895/tile037.png",
+    "background": "https://images.koji-cdn.com/6c0ce1e8-94ee-4b62-86f9-5289a3a81895/backgroundCandy.png",
+    "duck": "https://images.koji-cdn.com/6c0ce1e8-94ee-4b62-86f9-5289a3a81895/n1.gif",
+    "duckSmall": "https://images.koji-cdn.com/6c0ce1e8-94ee-4b62-86f9-5289a3a81895/tile037.png",
+    "popEffect": "https://images.koji-cdn.com/6c0ce1e8-94ee-4b62-86f9-5289a3a81895/tile041.png",
     "ammoIcon": "https://images.koji-cdn.com/9e16d283-29d4-4751-9bcf-5916c4c14764/bullet.png",
     "alertIcon": "https://images.koji-cdn.com/9e16d283-29d4-4751-9bcf-5916c4c14764/exclamation2.png",
     "shotEffect": "https://images.koji-cdn.com/9e16d283-29d4-4751-9bcf-5916c4c14764/shot2.png",
-    "helm": "https://images.koji-cdn.com/9e16d283-29d4-4751-9bcf-5916c4c14764/helm.png"
+    "helm": "https://images.koji-cdn.com/9e16d283-29d4-4751-9bcf-5916c4c14764/helm.png",
+    "candy1": "https://images.koji-cdn.com/6c0ce1e8-94ee-4b62-86f9-5289a3a81895/n1.gif",
+    "candy2": "https://images.koji-cdn.com/6c0ce1e8-94ee-4b62-86f9-5289a3a81895/candy2.gif",
+    "candy3": "https://images.koji-cdn.com/6c0ce1e8-94ee-4b62-86f9-5289a3a81895/n3.gif",
+    "candy4": "https://images.koji-cdn.com/6c0ce1e8-94ee-4b62-86f9-5289a3a81895/n4.gif"
   },
   "@@editor": [
     {
@@ -44,8 +48,26 @@
           "type": "image"
         },
         {
-          "key": "duck",
-          "name": "Duck",
+          "key": "candy1",
+          "name": "Candy 1",
+          "description": "",
+          "type": "image"
+        },
+        {
+          "key": "candy2",
+          "name": "Candy 2",
+          "description": "",
+          "type": "image"
+        },
+        {
+          "key": "candy3",
+          "name": "Candy 3",
+          "description": "",
+          "type": "image"
+        },
+        {
+          "key": "candy4",
+          "name": "Candy 4",
           "description": "",
           "type": "image"
         },
