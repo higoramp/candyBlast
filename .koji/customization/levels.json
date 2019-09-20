@@ -1,8 +1,77 @@
 {
   "levels": {
-    "levelsMap": "[\n[0,1,0,0,0],\n[0,1,0,0,0],\n[0,1,0,0,0],\n[0,1,0,0,0],\n[0,1,0,0,0],\n[0,1,0,0,0]\n]",
     "columns": "5",
-    "rows": "6"
+    "rows": "6",
+    "levelsMap": [
+		{
+            "helpText": "Tap on one candy\nto explode it!",
+			"maxClicks": 1,
+			"map":  [
+					[-1,-1,-1,-1,-1],
+					[-1,-1,0,-1,-1],
+					[-1,-1,-1,-1,-1],
+					[-1,-1,-1,-1,-1],
+					[-1,-1,0,-1,-1],
+					[-1,-1,-1,-1,-1]
+				]
+		},
+        {
+            "helpText": "Theese new green Candy\nare harder to explode.",
+			"maxClicks": 1,
+			"map":  [
+					[-1,0,-1,-1,0],
+					[-1,-1,-1,-1,-1],
+					[-1,1,-1,-1,0],
+					[-1,1,-1,-1,0],
+					[-1,-1,-1,-1,-1],
+					[-1,0,-1,-1,0]
+				]
+		},
+        {
+			"maxClicks": 3,
+			"map":  [
+					[0,-1,0,-1,0],
+					[1,-1,0,-1,1],
+					[1,-1,0,-1,1],
+					[1,-1,0,-1,1],
+					[1,-1,0,-1,1],
+					[1,2,0,2,1]
+				]
+		},
+        {
+			"maxClicks": 2,
+			"map":  [
+					[-1,-1,-1,-1,-1],
+					[-1,0,-1,0,-1],
+					[0,1,0,1,0],
+					[-1,1,-1,1,-1],
+					[-1,0,-1,0,-1],
+					[-1,-1,-1,-1,-1]
+				]
+		},
+        {
+			"maxClicks": 1,
+			"map":  [
+					[-1,-1,-1,-1,-1],
+					[-1,-1,-1,-1,-1],
+					[0,1,0,0,1],
+					[-1,-1,-1,-1,-1],
+					[-1,-1,-1,-1,-1],
+					[-1,-1,-1,-1,-1]
+				]
+		},
+        {
+			"maxClicks": 3,
+			"map":  [
+					[3,1,1,2,0],
+					[-1,1,-1,0,1],
+					[3,0,2,3,3],
+					[3,0,0,3,0],
+					[0,1,2,0,0],
+					[0,-1,2,2,-1]
+				]
+		}
+    ]
   },
   "@@editor": [
     {
@@ -22,12 +91,6 @@
           "name": "Number of Rows",
           "description": "The number of objects in the vertical",
           "type": "text"
-        },
-        {
-          "key": "levelsMap",
-          "name": "Levels of game",
-          "description": "Write inside the levels following the template format, where -1 is for no object and 0, 1, 2, 3 are for type",
-          "type": "textarea"
         }
       ]
     }

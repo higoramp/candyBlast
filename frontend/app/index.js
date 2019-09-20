@@ -1,4 +1,5 @@
 let myFont; //The font we'll use throughout the app
+let titleFont;
 
 let gameOver = false; //If it's true the game will render the main menu
 let gameBeginning = true; //Should be true only before the user starts the game for the first time
@@ -8,6 +9,9 @@ let gameBeginning = true; //Should be true only before the user starts the game 
 let balloons = [];
 let balloonsParticles = [];
 let popEffects = [];
+let messageBox = [];
+
+let levelsMap = [];
 
 
 //===Buttons
@@ -25,9 +29,10 @@ let maxVelocityX = 1;
 let marginH = 50;
 let marginV = 50;
 
-let phase = 1;
+let currentLevel = 0;
 
 let clicksAvailable = 1;
+let levelComplete = false;
 
 let isClicking = false;
 
@@ -50,9 +55,15 @@ let imgBalloon = [];
 let imgBalloonParticle;
 let imgPopEffect;
 
+let panelBackground;
+let imgNext;
+let imgRetry;
+
 //===Audio
 let sndMusic;
 let sndPop = [];
+
+let levelUp;
 
 let soundEnabled = true;
 let canMute = true;
@@ -85,6 +96,11 @@ function preload() {
     myFont = getFontFamily(Koji.config.strings.fontFamily);
     let newStr = myFont.replace("+", " ");
     myFont = newStr;
+    var link = document.createElement('link');
+    link.href = Koji.config.strings.titleFont;
+    link.rel = 'stylesheet';
+    document.head.appendChild(link);
+    titleFont = getFontFamily(Koji.config.strings.titleFont).replace("+", " ");
     //===
     //===Load images
 
@@ -99,9 +115,10 @@ function preload() {
     imgBalloon[3] = loadImage(Koji.config.images.candy4);
 
     imgBalloonParticle = loadImage(Koji.config.images.duckSmall);
-
+    panelBackground = loadImage(Koji.config.images.panelBackground);
     imgPopEffect = loadImage(Koji.config.images.popEffect);
-  
+    imgNext = loadImage(Koji.config.images.next);
+    imgRetry = loadImage(Koji.config.images.retry);
     soundImage = loadImage(Koji.config.images.soundImage);
     muteImage = loadImage(Koji.config.images.muteImage);
 
@@ -109,10 +126,10 @@ function preload() {
 
     //===Load Soundsfiring
 
-    if (Koji.config.sounds.pop1) sndPop[0] = loadSound(Koji.config.sounds.pop1);
-    if (Koji.config.sounds.pop2) sndPop[1] = loadSound(Koji.config.sounds.pop2);
-    if (Koji.config.sounds.pop3) sndPop[2] = loadSound(Koji.config.sounds.pop3);
+
+    if (Koji.config.sounds.pop3) sndPop = loadSound(Koji.config.sounds.pop3);
     if (Koji.config.sounds.shot) sndShot = loadSound(Koji.config.sounds.shot);
+    if (Koji.config.sounds.levelup) levelup = loadSound(Koji.config.sounds.levelup);
     //Background sound
     if (Koji.config.sounds.backgroundMusic) sndMusic = loadSound(Koji.config.sounds.backgroundMusic);
 
@@ -120,6 +137,8 @@ function preload() {
     nColumns = parseInt(Koji.config.levels.columns);
     nRows = parseInt(Koji.config.levels.rows);
 
+    //Load levels Map
+    levelsMap = Koji.config.levels.levelsMap;
 
 
 }
@@ -158,6 +177,7 @@ function setup() {
     isMobile = detectMobile();
 
     textFont(myFont); //set our font
+   
     document.body.style.fontFamily = myFont;
 
     playButton = new PlayButton();
@@ -172,6 +192,48 @@ function setup() {
 function resize(){
     resizeCanvas(window.innerWidth, window.innerHeight);
 }
+
+function checkGameOver(){
+    if(!levelComplete){
+        if(balloons.length==0){
+        if (levelsMap.length>(currentLevel+1)){
+            pushMessage("Great! Next level", imgNext, ()=>{
+                console.log("Next Level");
+                currentLevel++;
+                loadMap();
+            });
+        }else{
+         
+            pushMessage("Congratulations!\n No more levels!", imgNext, ()=>{
+                gameOver = true;
+            });
+        
+        }
+        
+        levelComplete = true;
+        }else{
+            if(clicksAvailable==0 && balloonsParticles.length==0){
+                console.log(balloons.filter((value)=>value.popping == true || value.popped).length);
+                if (balloons.filter((value)=>value.popping == true || value.popped).length==0){
+                    levelComplete = true;
+        
+                    pushMessage("Try Again?",  imgRetry, ()=>{
+                        loadMap();
+                    });
+                   
+                }
+            }
+        }
+    }
+}
+
+function pushMessage(text, img, callback){
+    setTimeout(()=>{
+        messageBox.push(new PanelBox(text, width*0.8, height*4/10, callback, img));
+    }, 1500);
+
+}
+
 function draw() {
     //Draw background or a solid color
     if (imgBackground) {
@@ -185,7 +247,7 @@ function draw() {
 
         //===Draw title
         let titleText = Koji.config.strings.title;
-        let titleSize = floor(objSize * 2);
+        let titleSize = floor(objSize * 2.5);
         textSize(titleSize);
 
         //Resize title until it fits the screen
@@ -193,13 +255,13 @@ function draw() {
             titleSize *= 0.9;
             textSize(titleSize);
         }
-
+        textFont(titleFont); //set our font
         fill(Koji.config.colors.titleColor);
         textAlign(CENTER, TOP);
         text(Koji.config.strings.title, width / 2, objSize * 3);
-
+        
         //===Draw instructions
-
+        textFont(myFont); //set our font
         let instructionsText = [];
         instructionsText[0] = Koji.config.strings.instructions1;
         instructionsText[1] = Koji.config.strings.instructions2;
@@ -217,35 +279,34 @@ function draw() {
                 textSize(instructionsSize[i]);
             }
         }
-
+        textAlign(CENTER, CENTER);
         textSize(instructionsSize[0]);
         fill(Koji.config.colors.instructionsColor);
-        textAlign(CENTER, TOP);
-        text(instructionsText[0], width / 2, objSize * 6);
+        
+        text(instructionsText[0], width / 2, objSize * 8);
 
         textSize(instructionsSize[1]);
         fill(Koji.config.colors.instructionsColor);
-        textAlign(CENTER, TOP);
-        text(instructionsText[1], width / 2, objSize * 8);
+        textAlign(CENTER, CENTER);
+        text(instructionsText[1], width / 2, objSize * 10);
 
         textSize(instructionsSize[2]);
         fill(Koji.config.colors.instructionsColor);
-        textAlign(CENTER, TOP);
-        text(instructionsText[2], width / 2, objSize * 10);
+        textAlign(CENTER, CENTER);
+        text(instructionsText[2], width / 2, objSize * 12);
 
 
         //===
         playButton.update();
         playButton.btn.draw();
 
-        leaderboardButton.update();
-        leaderboardButton.btn.draw();
+        // leaderboardButton.update();
+        // leaderboardButton.btn.draw();
 
 
     } else {
 
         //Update and render all game objects here
-        checkPhase();
 
         for (let i = 0; i < balloons.length; i++) {
             balloons[i].update();
@@ -271,6 +332,12 @@ function draw() {
             popEffects[i].update();
             popEffects[i].render();
         }
+        //Message box
+        for (let i = 0; i < messageBox.length; i++) {
+            messageBox[i].update();
+            messageBox[i].render();
+        }
+
         
         //===Score draw
         let clicksX = width - objSize / 2;
@@ -278,16 +345,38 @@ function draw() {
         textSize(objSize * 2);
         fill(Koji.config.colors.scoreColor);
         textAlign(RIGHT, TOP);
-        text(clicksAvailable, clicksX, clicksY);
+        text("Moves: "+clicksAvailable, clicksX, clicksY);
 
         
         cleanup();
+        checkGameOver();
 
     }
 
     soundButton.render();
 }
 
+function loadMap(){
+    let map = levelsMap[currentLevel];
+    levelComplete = false;
+    balloons = [];
+    balloonsParticles =[];
+    messageBox = [];
+    clicksAvailable = map['maxClicks'];
+    helpText = map['helpText'];
+    map = map['map'];
+
+     for (let i = 0; i < map.length; i++) {
+        for (let j = 0; j < map.length; j++) {
+            if(map[i][j]>=0){
+                createBalloon(map[i][j], i, j);
+            }
+        }
+     }
+     if (helpText){
+         messageBox.push(new MessageBox(helpText));
+     }
+}
 
 //===Go through objects and see which ones need to be removed
 //A good practive would be for objects to have a boolean like removable, and here you would go through all objects and remove them if they have removable = true;
@@ -302,9 +391,9 @@ function cleanup() {
     for (let i = 0; i < balloons.length; i++) {
         if (balloons[i].popped) {
            
-            let id = floor(random() * sndPop.length);
+         
 
-            if (sndPop[id]) sndPop[id].play();
+            sndPop.play();
             
             balloons[i].removable = true;
         }
@@ -330,6 +419,11 @@ function cleanup() {
             popEffects.splice(i, 1);
         }
     }
+    for (let i = 0; i < messageBox.length; i++) {
+        if (messageBox[i].removable) {
+            messageBox.splice(i, 1);
+        }
+    }
 
     
 }
@@ -346,22 +440,27 @@ function touchStarted() {
     if (!gameOver && !gameBeginning) {
         //Ingame
         if (!isClicking){ //Prevent accidental double click
-            if (sndShot) {
-                    sndShot.setVolume(0.5);
-                    sndShot.play();
-                    
+            if(clicksAvailable>0){
+                for (let i = 0; i < balloons.length; i++) {
+                    if (balloons[i].checkClick()) {
+                        balloons[i].popIt();
+                        clicksAvailable--;
+                        break;
+                    }
+                }
             }
-            
-            for (let i = 0; i < balloons.length; i++) {
-                if (balloons[i].checkClick()) {
-                    balloons[i].popIt();
-                    clicksAvailable--;
+            for (let i = 0; i < messageBox.length; i++) {
+                if (messageBox[i].checkClick()) {
+                    messageBox[i].removable = true;
                     break;
                 }
             }
+
             setTimeout(() => {
                 isClicking = false;
-            }, 100);
+            }, 500);
+
+
         }
         
         
@@ -390,23 +489,16 @@ function init() {
     balloons = [];
     balloonsParticles = [];
 
- 
+    currentLevel = 0;
+    messageBox = [];
 
     playMusic();
-createBalloon(1, 0, 0);
-createBalloon(0, 1, 1);
-
-createBalloon(0, 2, 2);
-createBalloon(0, 2, 4);
-createBalloon(2, 5, 4);
-}
-
-
-function checkPhase() {
-    
+    loadMap();
 
     
 }
+
+
 
 function createBalloon(type, row, column) {
     let pos = createVector(column*columnSize+marginH+columnSize/2, row*rowSize+marginV+rowSize/2);

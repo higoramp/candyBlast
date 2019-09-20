@@ -2,13 +2,13 @@
   "colors": {
     "backgroundColor": "#61BFD1",
     "textColor": "#ffffff",
-    "buttonTextColor": "#61BFD1",
-    "buttonColor": "#D6F6FC",
+    "buttonTextColor": "#ffffff",
+    "buttonColor": "#b105af",
     "scoreColor": "#FFEBD8",
     "highscoreColor": "#FFEBD8",
-    "titleColor": "#D6F6FC",
-    "instructionsColor": "#D6F6FC",
-    "buttonHoverColor": "#97E0EE",
+    "titleColor": "#8304cd",
+    "instructionsColor": "#8946e6",
+    "buttonHoverColor": "#da79f1",
     "buttonClickColor": "#ffffff",
     "roundTextColor": "#c1f1be",
     "missTextColor": "#c03737"

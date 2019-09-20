@@ -1,13 +1,13 @@
 {
   "strings": {
     "fontFamily": "https://fonts.googleapis.com/css?family=Baloo",
-    "title": "Hunt the Duck",
-    "instructions1": "Tap to fire!",
-    "instructions2": "Don't let any ducks escape!",
+    "title": "Candy Blast",
+    "instructions1": "Tap on candies to explode them",
+    "instructions2": "Use less moves as possible",
     "instructions3": "",
     "gameOverText": "GAME OVER",
     "highScoreText": "High Score:",
-    "playButtonText": "Start Hunting!",
+    "playButtonText": "Let's Play!",
     "scoreText": "Score:",
     "highscoreText": "High Score:",
     "highscoreGainedText": "New High Score!",
@@ -22,7 +22,8 @@
     "startingBullets": "6",
     "congratulationsText": "Well Done!",
     "timeToAlert": "10000",
-    "timeToEscape": "5000"
+    "timeToEscape": "5000",
+    "titleFont": "https://fonts.googleapis.com/css?family=Lobster&display=swap"
   },
   "@@editor": [
     {
@@ -50,6 +51,12 @@
         {
           "key": "instructions3",
           "name": "Game Instructions 3",
+          "type": "text"
+        },
+        {
+          "key": "titleFont",
+          "name": "Title Font",
+          "description": "Google fonts link to font to use in the TITLE ONLY",
           "type": "text"
         },
         {

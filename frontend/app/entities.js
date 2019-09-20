@@ -69,12 +69,16 @@ class Balloon extends Entity {
         this.sizeModX = this.sizeMod;
         this.sizeModY = this.sizeMod;
         this.popped = false;
+        this.popping = false;
         this.animationTimer = 0;
     }
 
     update() {
         this.animationTimer += 1 / frameRate();
         this.checkCollisionWith();
+        //effect to increase size smoothly
+        this.sizeModX = Smooth(this.sizeModX, this.sizeMod, 18);
+        this.sizeModY = Smooth(this.sizeModY, this.sizeMod, 18);
     }
 
     getSizeMod(type){
@@ -103,34 +107,46 @@ class Balloon extends Entity {
     }
 
     checkCollisionWith(){
-        for(let particle of balloonsParticles){
-            if(particle.collisionWith(this)){
-                particle.removable = true;
-                this.popIt();
+        if(!this.popping){
+            for(let particle of balloonsParticles){
+                if(particle.collisionWith(this)){
+                    particle.removable = true;
+                    this.popIt();
+                }
             }
         }
     }
     updateImg(){
         this.img= imgBalloon[this.type];
         this.sizeMod = this.getSizeMod(this.type);
-        this.sizeModX=this.sizeMod;
-        this.sizeModY=this.sizeMod;
     }
     popIt(){
-        if(this.type<=0){
-           
-            this.popped =true;
-            popEffects.push(new PopEffect(this.pos.x, this.pos.y, this.sizeMod, ()=> {
-                balloonsParticles.push(new BalloonParticle(this.pos.x, this.pos.y, this.type, 1, 0));
-                balloonsParticles.push(new BalloonParticle(this.pos.x, this.pos.y, this.type, 0, 1));
-                balloonsParticles.push(new BalloonParticle(this.pos.x, this.pos.y, this.type, -1, 0));
-                balloonsParticles.push(new BalloonParticle(this.pos.x, this.pos.y, this.type, 0, -1));
-            }));
-            
-        }else{
-            this.type--;
+        if (!this.popping){
+            if(this.type<=0){
+            this.sizeMod =this.sizeMod*1.5;
+                sndShot.setVolume(0.5);
+                sndShot.play();
+                this.popping = true;
+                setTimeout(()=>{
+                    
+                    let offset=objSize*this.sizeMod/2;
+                    popEffects.push(new PopEffect(this.pos.x, this.pos.y, this.sizeMod, ()=> {
+                    balloonsParticles.push(new BalloonParticle(this.pos.x+offset, this.pos.y, this.type, 1, 0));
+                    balloonsParticles.push(new BalloonParticle(this.pos.x, this.pos.y+offset, this.type, 0, 1));
+                    balloonsParticles.push(new BalloonParticle(this.pos.x-offset, this.pos.y, this.type, -1, 0));
+                    balloonsParticles.push(new BalloonParticle(this.pos.x, this.pos.y-offset, this.type, 0, -1));
+                    this.popped =true;
+                }));
+                }, 500);
+                
+                
+            }else{
+                levelup.setVolume(0.5);
+                levelup.play();
+                this.type--;
+                this.updateImg();
+            }
         }
-        this.updateImg();
         
     }
     checkClick() {
@@ -149,9 +165,9 @@ class Balloon extends Entity {
 class BalloonParticle extends Entity {
     constructor(x, y, type, directionX, directionY) {
         super(x, y);
-        this.img = imgBalloon[type];
-        this.maxSize = 0.6;
-        this.sizeMod = 0.1;
+        this.img = imgBalloonParticle;
+        this.maxSize = 1;
+        this.sizeMod = 0.6;
         this.maxVelocity = createVector(directionX*maxVelocityX, directionY*maxVelocityY);
         this.velocity = createVector(directionX*minVelocityX, directionY*minVelocityY);
         this.animationTimer=0;
@@ -206,8 +222,8 @@ class PopEffect extends Entity {
         this.img = imgPopEffect;
         this.rotation = random() * Math.PI;
         this.maxSize = size;
-        this.sizeMod = 0.1;
-        this.timer = 0.15;
+        this.sizeMod = size;
+        this.timer = 0.6;
         this.callback = callback;
     }
 
@@ -215,7 +231,7 @@ class PopEffect extends Entity {
         
         this.timer -= 1 / frameRate();
 
-        this.sizeMod = Smooth(this.sizeMod, this.maxSize, 3);
+        this.sizeMod = Smooth(this.sizeMod, this.maxSize, 32);
 
         if (this.timer <= 0) {
             this.removable = true;

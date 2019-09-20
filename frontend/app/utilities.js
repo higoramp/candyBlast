@@ -75,6 +75,171 @@ function SoundButton() {
 
 }
 
+class MessageBox {
+    
+    //Position 2 = middle
+    constructor(text, widthBox, heightBox, position=2, sizeText = 18) {
+      this.width = 0;
+      this.height = 0;
+      this.color = "#da79f1";			//Background color of the clickable
+      this.cornerRadius = 10;			//Corner radius of the clickable
+      this.strokeWeight = 2;			//Stroke width of the clickable
+      this.stroke = "#000000";		//Border color of the clickable
+      this.text = text;			//Text of the clickable
+      this.textColor = "#FFFFFF";	
+      this.textSize = sizeText;
+      this.lines=this.text.split('\n').length;
+      this.removable = false;
+      textSize(this.textSize);
+      let tWidth = textWidth(this.text.split('\n')[0]);
+      if(!widthBox){
+        widthBox=tWidth*1.2;
+      }
+      if(!heightBox){
+        heightBox = textAscent()*this.lines*1.5;
+        console.log(textAscent());
+      }
+      this.finalWidth = widthBox;
+      this.finalHeight = heightBox;
+      this.position = position;
+      this.pos = createVector(width/2 - this.width / 2, height / position - this.height/2);
+
+      this.posText = createVector(this.pos.x+tWidth/2, this.pos.y-this.lines*this.textSize/2);
+      
+    }
+
+    update() {
+      this.width = Smooth(this.width, this.finalWidth, 18);
+      this.height = Smooth(this.height, this.finalHeight, 18);
+      this.pos = createVector(width / 2 - this.width / 2, height / this.position - this.height/2);
+    }
+
+    render(){
+      fill(this.color);
+		  stroke(this.stroke);
+		  
+      rect(this.pos.x, this.pos.y, this.width, this.height, this.cornerRadius);
+  
+      if(this.width>=this.finalWidth*0.8){
+        textSize(this.textSize);
+        let tWidth = textWidth(this.text.split('\n')[0]);
+        strokeWeight(0.5);
+        fill(this.textColor);
+        text(this.text, this.posText.x, this.posText.y);
+      }
+
+    }
+
+    checkClick() {
+        if (mouseX < this.pos.x ||
+            mouseX > this.pos.x + this.finalWidth ||
+            mouseY < this.pos.y ||
+            mouseY > this.pos.y +this.finalHeight) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+}
+
+class PanelBox extends MessageBox {
+     constructor(text, width, height, callback, img = imgNext) {
+         super(text, width, height, 3, 24);//Position = TOP
+         this.imgBp = panelBackground;
+         this.buttons=[];
+         this.posText.y=this.posText.y-this.finalHeight/8;
+         this.pos.y=this.pos.y*0.8;
+         this.callback = callback;
+         this.addButton(img);
+     }
+
+     addButton(img){
+         let sizeButton=objSize*3;
+         let x = this.pos.x;
+         let y = this.pos.y+this.finalHeight/3;
+         this.buttons.push(new Button(img,x, y, sizeButton, sizeButton , this.callback));
+     }
+
+      render(){
+      fill(this.color);
+	  stroke(this.stroke);
+
+       push();
+       translate(this.pos.x, this.pos.y);
+       image(this.imgBp, 0, 0, this.width, this.height);
+       pop();
+		  
+      if(this.width>=this.finalWidth*0.8){
+        textSize(this.textSize);
+        let tWidth = textWidth(this.text.split('\n')[0]);
+        strokeWeight(0.5);
+        fill(this.textColor);
+        text(this.text, this.posText.x, this.posText.y);
+
+        //render buttons
+        for(let btt of this.buttons){
+            btt.update();
+            btt.render();
+        }
+      }
+      
+
+    }
+
+    checkClick() {
+        let click=false;
+        for(let btt of this.buttons){
+          click=btt.checkClick()||click;
+        }
+        return click;
+    }
+    
+}
+
+class Button {
+    constructor (img, x, y, width, height, callback){
+        this.img = img;
+        this.pos = createVector(x, y);
+        this.finalWidth = width;
+        this.finalHeight = height;
+        this.width = 0;
+        this.height = 0;
+        this.callback = callback;
+             console.log(callback);
+         console.log("CALLBACK");
+    }
+
+    update(){
+        this.width = Smooth(this.width, this.finalWidth, 18);
+        this.height = Smooth(this.height, this.finalHeight, 18);
+    }
+
+    render(){
+       push();
+       translate(this.pos.x, this.pos.y);
+       image(this.img, -this.width/2, -this.height/2, this.width, this.height);
+       pop();
+    }
+
+    checkClick() {
+        if (mouseX >= this.pos.x -this.finalWidth/2 &&
+            mouseX <= this.pos.x + this.finalWidth/2 &&
+            mouseY >= this.pos.y-this.finalHeight/2 &&
+            mouseY <= this.pos.y +this.finalHeight/2) {
+            
+            this.width = this.width*0.8;
+            this.height = this.height*0.8;
+            setTimeout(()=>{
+                console.log(this.callback);
+                this.callback();
+                return true;
+            }, 500);
+            
+        } else {
+            return false;
+        }
+    }
+}
 
 class PlayButton {
     constructor() {
@@ -135,7 +300,7 @@ class LeaderboardButton {
         this.btn.textColor = Koji.config.colors.buttonTextColor;
 
         this.size = createVector(this.btn.textWidth, this.btn.textSize);
-        this.pos = createVector(width / 2 - this.size.x / 2, height - this.size.y / 2 - objSize * 2);
+        this.pos = createVector(width / 2 - this.size.x / 2, height/2 - this.size.y / 2 - objSize * 2);
 
         if (this.size.y > width) {
             this.size.y = width;
@@ -173,7 +338,7 @@ class LeaderboardButton {
         this.btn.resize(this.size.x, this.size.y);
 
         this.pos.x = width / 2 - this.size.x / 2;
-        this.pos.y = height - this.size.y / 2 - objSize * 4;
+        this.pos.y = height/2 + this.size.y / 2 + objSize * 3;
         this.btn.locate(this.pos.x, this.pos.y);
     }
 }
