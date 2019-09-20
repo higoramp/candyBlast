@@ -130,13 +130,14 @@ class Balloon extends Entity {
                 setTimeout(()=>{
                     
                     let offset=objSize*this.sizeMod/2;
-                    popEffects.push(new PopEffect(this.pos.x, this.pos.y, this.sizeMod, ()=> {
-                    balloonsParticles.push(new BalloonParticle(this.pos.x+offset, this.pos.y, this.type, 1, 0));
-                    balloonsParticles.push(new BalloonParticle(this.pos.x, this.pos.y+offset, this.type, 0, 1));
-                    balloonsParticles.push(new BalloonParticle(this.pos.x-offset, this.pos.y, this.type, -1, 0));
-                    balloonsParticles.push(new BalloonParticle(this.pos.x, this.pos.y-offset, this.type, 0, -1));
                     this.popped =true;
-                }));
+                    popEffects.push(new PopEffect(this.pos.x, this.pos.y, this.sizeMod, ()=> {
+                        balloonsParticles.push(new BalloonParticle(this.pos.x+offset, this.pos.y, this.type, 1, 0));
+                        balloonsParticles.push(new BalloonParticle(this.pos.x, this.pos.y+offset, this.type, 0, 1));
+                        balloonsParticles.push(new BalloonParticle(this.pos.x-offset, this.pos.y, this.type, -1, 0));
+                        balloonsParticles.push(new BalloonParticle(this.pos.x, this.pos.y-offset, this.type, 0, -1));
+                        
+                    }));
                 }, 500);
                 
                 

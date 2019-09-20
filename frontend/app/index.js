@@ -212,7 +212,7 @@ function checkGameOver(){
         
         levelComplete = true;
         }else{
-            if(clicksAvailable==0 && balloonsParticles.length==0){
+            if(clicksAvailable==0 && balloonsParticles.length==0&&popEffects.length==0){
                 console.log(balloons.filter((value)=>value.popping == true || value.popped).length);
                 if (balloons.filter((value)=>value.popping == true || value.popped).length==0){
                     levelComplete = true;
