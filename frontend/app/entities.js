@@ -234,10 +234,17 @@ class PopEffect extends Entity {
 
         this.sizeMod = Smooth(this.sizeMod, this.maxSize, 32);
 
-        if (this.timer <= 0) {
-            this.removable = true;
-            this.callback();
+        if (this.timer <= 0.1) {
+					if (this.callback){
+						this.callback();
+						this.callback = null;
+					}
+            
         }
+				if (this.timer <= 0) {
+            this.removable = true;
+        }
+
     }
 }
 

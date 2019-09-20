@@ -21,10 +21,10 @@ let leaderboardButton;
 
 //Control game variables
 let minVelocityY = 0;
-let maxVelocityY = 1;
+let maxVelocityY = 1.8;
 
 let minVelocityX = 0;
-let maxVelocityX = 1;
+let maxVelocityX = 1.8;
 
 let marginH = 50;
 let marginV = 50;
@@ -154,8 +154,10 @@ function setup() {
         touchStarted();
     });
     
-    //LoadPhase
-        
+		//delay animations candies
+		for (let candy of imgBalloon){
+			candy.delay(400);
+		}
 
     //===How much of the screen should the game take
     let sizeModifier = 0.75;
@@ -198,7 +200,6 @@ function checkGameOver(){
         if(balloons.length==0){
         if (levelsMap.length>(currentLevel+1)){
             pushMessage("Great! Next level", imgNext, ()=>{
-                console.log("Next Level");
                 currentLevel++;
                 loadMap();
             });
@@ -213,7 +214,6 @@ function checkGameOver(){
         levelComplete = true;
         }else{
             if(clicksAvailable==0 && balloonsParticles.length==0&&popEffects.length==0){
-                console.log(balloons.filter((value)=>value.popping == true || value.popped).length);
                 if (balloons.filter((value)=>value.popping == true || value.popped).length==0){
                     levelComplete = true;
         
@@ -438,6 +438,7 @@ function touchStarted() {
     }
 
     if (!gameOver && !gameBeginning) {
+			console.log("TOuch "+mouseX+": "+mouseY);
         //Ingame
         if (!isClicking){ //Prevent accidental double click
             if(clicksAvailable>0){
