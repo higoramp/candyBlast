@@ -2,6 +2,7 @@ import { h, Component } from 'preact';
 import GameContainer from './GameContainer';
 import Leaderboard from './Leaderboard';
 import SetScore from './SetScore';
+import ChooseLevel from './ChooseLevel';
 
 export default class App extends Component {
 	state = {
@@ -26,6 +27,13 @@ export default class App extends Component {
 			return (
 				<div>
 					<SetScore score={this.state.score} />
+				</div>
+			)
+		}
+    if (this.state.view === 'chooselevel') {
+			return (
+				<div>
+					<ChooseLevel />
 				</div>
 			)
 		}

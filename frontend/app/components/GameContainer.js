@@ -12,13 +12,13 @@ class GameContainer extends Component {
     require('script-loader!app/entities.js');
     require('script-loader!app/utilities.js');
     require('script-loader!app/clickable.js');
-    new p5(null, 'game-container');
+    console.log("DID MOUNT");
 
   }
 
   componentWillUnmount() {
       if(sndMusic){
-          sndMusic.dispose();
+          //sndMusic.dispose();
       }
   }
 

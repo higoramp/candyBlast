@@ -4,6 +4,7 @@
 
 
 function playMusic() {
+  console.log("PLAY MUSIC");
     if (sndMusic&&!sndMusic.isPlaying()) {
         sndMusic.setVolume(0.25);
         sndMusic.setLoop(true);
@@ -291,6 +292,58 @@ class PlayButton {
         this.btn.locate(this.pos.x, this.pos.y);
     }
 }
+
+class ChooseLevelButton {
+    constructor() {
+        this.btn = new Clickable();
+        this.btn.textSize = floor(objSize * 0.9);
+        this.btn.text = Koji.config.strings.chooselevelButtonText;
+        this.btn.textColor = Koji.config.colors.buttonTextColor;
+
+        this.size = createVector(this.btn.textWidth, this.btn.textSize);
+        this.pos = createVector(width / 2 - this.size.x / 2, height/2 - this.size.y / 2 - objSize * 2);
+
+        if (this.size.y > width) {
+            this.size.y = width;
+        }
+
+        this.btn.resize(this.size.x, this.size.y);
+
+        this.btn.strokeWeight = 0;
+
+
+        this.btn.onHover = function () {
+            this.color = Koji.config.colors.buttonHoverColor;
+        }
+        this.btn.onOutside = function () {
+            this.color = Koji.config.colors.buttonColor;
+        }
+        this.btn.onPress = function () {
+            this.color = Koji.config.colors.buttonClickColor;
+        }
+        this.btn.onRelease = function () {
+            window.setAppView("chooselevel");
+           
+        }
+    }
+
+    update() {
+
+        //Resize button to fit text
+        this.btn.textSize = floor(objSize * 0.9);
+        this.size = createVector(this.btn.textWidth * 1.5, this.btn.textSize * 3);
+
+        if (this.size.y > width) {
+            this.size.y = width;
+        }
+        this.btn.resize(this.size.x, this.size.y);
+
+        this.pos.x = width / 2 - this.size.x / 2;
+        this.pos.y = height/2 + this.size.y / 2 + objSize * 3;
+        this.btn.locate(this.pos.x, this.pos.y);
+    }
+}
+
 
 class LeaderboardButton {
     constructor() {

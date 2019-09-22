@@ -18,7 +18,7 @@ let levelsMap = [];
 let playButton;
 let soundButton;
 let leaderboardButton;
-
+let chooselevelButton;
 //Control game variables
 let minVelocityY = 0;
 let maxVelocityY = 1.8;
@@ -88,6 +88,8 @@ let touching = false;
 
 //===Load this before starting the game
 function preload() {
+  console.log("PRELOAD");
+  console.log(this);
     //===Load font from google fonts link provided in game settings
     var link = document.createElement('link');
     link.href = Koji.config.strings.fontFamily;
@@ -185,6 +187,7 @@ function setup() {
     playButton = new PlayButton();
     soundButton = new SoundButton();
     leaderboardButton = new LeaderboardButton();
+    chooselevelButton = new ChooseLevelButton();
 
     gameBeginning = true;
 
@@ -235,6 +238,7 @@ function pushMessage(text, img, callback){
 }
 
 function draw() {
+  console.log("DRAW");
     //Draw background or a solid color
     if (imgBackground) {
         background(imgBackground);
@@ -302,6 +306,10 @@ function draw() {
 
         // leaderboardButton.update();
         // leaderboardButton.btn.draw();
+
+        
+        chooselevelButton.update();
+        chooselevelButton.btn.draw();
 
 
     } else {

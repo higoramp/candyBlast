@@ -23,7 +23,8 @@
     "congratulationsText": "Well Done!",
     "timeToAlert": "10000",
     "timeToEscape": "5000",
-    "titleFont": "https://fonts.googleapis.com/css?family=Lobster&display=swap"
+    "titleFont": "https://fonts.googleapis.com/css?family=Lobster&display=swap",
+    "chooselevelButtonText": "Choose Level"
   },
   "@@editor": [
     {
@@ -69,6 +70,12 @@
           "key": "playButtonText",
           "name": "Play Button Text",
           "description": "Label on the Play Button",
+          "type": "text"
+        },
+        {
+          "key": "chooselevelButtonText",
+          "name": "Choose Level Button Text",
+          "description": "Label on the Choose Level Button",
           "type": "text"
         },
         {
