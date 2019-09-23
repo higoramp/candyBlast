@@ -1,6 +1,7 @@
 import { h, render } from 'preact';
 import Koji from '@withkoji/vcc';
 import './leaderboardStyles.css';
+import './chooselevel.css';
 import './index.css';
 //import * as p5 from  '../libs/p5.js/lib/p5.min.js';
 //import '../libs/p5.js/lib/addons/p5.sound.min.js';

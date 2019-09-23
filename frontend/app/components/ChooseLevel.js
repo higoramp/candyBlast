@@ -2,7 +2,7 @@ import { h, Component } from 'preact';
 import PropTypes from 'prop-types';
 import Koji from '@withkoji/vcc';
 
-class SetScore extends Component {
+class ChooseLevel extends Component {
     static propTypes = {
         score: PropTypes.number,
     };
@@ -13,16 +13,20 @@ class SetScore extends Component {
         isSubmitting: false,
     };
 
-    componentDidMount() {
-        //Activated with a delay so it doesn't lose focus immediately after click
-        setTimeout(function () {
-            this.nameInput.focus();
-        }.bind(this), 100);
+    levels = Koji.config.levels.levelsMap;
 
+   
+ 
+    componentDidMount() {
+      
     }
 
     handleClose = () => {
         window.setAppView("game");
+    }
+
+    selectLevel =(level)=>(e)=>{
+      console.log("Select level"+level);
     }
 
     handleSubmit = (e) => {
@@ -60,80 +64,84 @@ class SetScore extends Component {
     }
 
     render() {
+      console.log("RENDER");
+      for (let i=0;i<37;i++){
+       this.levels.push({'teste': 'teste'});
+      }
+       localStorage.setItem("lastLevel", 8);
+
+
+      let nx = Math.floor((width-84)/85);
+      let ny = Math.floor((height*0.65)/85);
+      let levelPerBoard = nx*ny;
+      let nBoards = Math.ceil(this.levels.length/(levelPerBoard));
+      let levelsDivided=[];
+      for (let i=0;i<nBoards;i++){
+        levelsDivided.push(this.levels.slice(i*levelPerBoard, (i+1)*levelPerBoard));
+      }
+      let lastLevel = localStorage.getItem("lastLevel", 0);
+
+  console.log("BOARDS: "+nBoards);
+  console.log(nx+": "+ny);
+
         return (
-            <div style={{ position: "absolute", backgroundColor: Koji.config.colors.backgroundColor, width: "100vw", height: "100vh" }}>
+            <div   style={{ position: "absolute", backgroundImage: "url("+Koji.config.images.background+")", backgroundSize: "cover", width: "100vw", height: "100vh", textAlign:"center" }} >
                 <div className="title"
                     style={{ color: Koji.config.colors.titleColor }}>
-                    {"Submit To Leaderboard"}
+                    {"Choose one Level"}
                 </div>
-
-                <div id={'leaderboard-set-score'} style={{ backgroundColor: Koji.config.colors.backgroundColor, borderColor: Koji.config.colors.titleColor }}>
-                    <form
-                        id={'score-form'}
+                   <form
+                        id={'level-form'}
                         onSubmit={this.handleSubmit}
                     >
-                        <div className={'input-wrapper'}>
-                            <label className={'label'} style={{ color: Koji.config.colors.titleColor }}>
-                                {"Score"}
-                            </label>
-                            <input
-                                disabled
-                                value={this.props.score}
-                                style={{ color: Koji.config.colors.titleColor, borderColor: Koji.config.colors.titleColor }}
-                            />
-                        </div>
 
-                        <div className={'input-wrapper'}>
-                            <label className={'label'} style={{ color: Koji.config.colors.titleColor }}>
-                                {"Name"}
-                            </label>
-                            <input
-                                onChange={(event) => {
-                                    this.setState({ name: event.target.value });
-                                }}
-                                type={'text'}
-                                value={this.state.name}
-                                style={{ color: Koji.config.colors.titleColor, borderColor: Koji.config.colors.titleColor }}
-                                ref={(input) => { this.nameInput = input; }}
-                            />
-                        </div>
-
-                        {Koji.config.strings.emailInputEnabled ?
-                            <div className={'input-wrapper'}>
-                            <label style={{ color: Koji.config.colors.titleColor }}>{'Your Email Address (Private)'}</label>
-                            <input
-                                onChange={(event) => {
-                                    this.setState({ email: event.target.value });
-                                }}
-                                type={'email'}
-                                value={this.state.email}
-                                style={{ color: Koji.config.colors.titleColor, borderColor: Koji.config.colors.titleColor }}
-                            />
-                        </div>
-                        :<span></span>}
-
-                        <button
-                            disabled={this.state.isSubmitting}
-                            onClick={this.handleSubmit}
-                            type={'submit'}
-                            style={{ backgroundColor: Koji.config.colors.buttonColor, color: Koji.config.colors.buttonTextColor }}
-                        >
-                            {this.state.isSubmitting ? "Submitting..." : "Submit"}
-                        </button>
-                    </form>
-
-                    <button className="dismiss-button"
+                  {
+                              
+                                levelsDivided.map((levelBoard, indexBoard)=>{
+                                  return (<div id={'panel-choose-level'+indexBoard} style="padding: 24px"><div  class='panel-choose-level' style={{ backgroundColor: Koji.config.colors.backgroundColor,
+                    borderColor: Koji.config.colors.titleColor, display: 'flex' }}>
+                                      {
+                              
+                                levelBoard.map((level, index)=>{
+                                  return (indexBoard*levelPerBoard+index)<=lastLevel?
+                                   (<div class="panelLevel" onClick={this.selectLevel(indexBoard*levelPerBoard+index)}>
+                                    {indexBoard*levelPerBoard+index}
+                                  </div>):  (<div class="panelLevel locked">
+                                     <img src={Koji.config.images.lock} style="width: 20px; height:20px;"></img>
+                                     <span style="position: absolute; margin-top: 20px">{indexBoard*levelPerBoard+index}</span>
+                                  </div>);
+                                })
+                            
+                              
+                            
+                            }
+                                  
+                              
+                                  </div>
+                                      {indexBoard>0?
+                             (<a class="navigator" href={'#panel-choose-level'+(indexBoard-1)}>	&lt; </a>) :''
+                            }
+                            {indexBoard<(levelsDivided.length-1)?
+                                (<a class="navigator" href={'#panel-choose-level'+(indexBoard+1)}>	&gt;</a>):''
+                            }
+                                  </div>
+                                  )
+                                })
+                            
+                              
+                            
+                            }
+               
+                </form>
+                <button className="dismiss-button"
                         onClick={this.handleClose}
                         style={{ backgroundColor: Koji.config.colors.buttonColor, color: Koji.config.colors.buttonTextColor }}>
                         {"Cancel"}
 
                     </button>
-
-
-                </div>
             </div>
         )
     }
 }
 
-export default SetScore;
+export default ChooseLevel;
