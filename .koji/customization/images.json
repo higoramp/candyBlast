@@ -17,7 +17,8 @@
     "candy4": "https://images.koji-cdn.com/6c0ce1e8-94ee-4b62-86f9-5289a3a81895/n4.gif",
     "panelBackground": "https://images.koji-cdn.com/6c0ce1e8-94ee-4b62-86f9-5289a3a81895/panel.png",
     "next": "https://images.koji-cdn.com/6c0ce1e8-94ee-4b62-86f9-5289a3a81895/nextLevel.png",
-    "retry": "https://images.koji-cdn.com/6c0ce1e8-94ee-4b62-86f9-5289a3a81895/retry.png"
+    "retry": "https://images.koji-cdn.com/6c0ce1e8-94ee-4b62-86f9-5289a3a81895/retry.png",
+    "lock": "https://objects.koji-cdn.com/6c0ce1e8-94ee-4b62-86f9-5289a3a81895/lock.svg"
   },
   "@@editor": [
     {
@@ -72,6 +73,12 @@
           "key": "candy4",
           "name": "Candy 4",
           "description": "",
+          "type": "image"
+        },
+        {
+          "key": "lock",
+          "name": "Lock",
+          "description": "Image for locked levels",
           "type": "image"
         },
         {
