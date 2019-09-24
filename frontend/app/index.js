@@ -3,7 +3,7 @@ let titleFont;
 
 let gameOver = false; //If it's true the game will render the main menu
 let gameBeginning = true; //Should be true only before the user starts the game for the first time
-
+let stateGame = 'gamebeginning';//COuld be gamebeginning, playing, chooselevel or gameover
 //===Game objects
 //Declare game objects here like player, enemies etc
 let balloons = [];
@@ -21,10 +21,10 @@ let leaderboardButton;
 let chooselevelButton;
 //Control game variables
 let minVelocityY = 0;
-let maxVelocityY = 1.8;
+let maxVelocityY;
 
 let minVelocityX = 0;
-let maxVelocityX = 1.8;
+let maxVelocityX;
 
 let marginH = 50;
 let marginV = 50;
@@ -145,7 +145,7 @@ function preload() {
 
 }
 function setup() {
-    
+    console.log("SETUP");
     // make a full screen canvas
     width = window.innerWidth;
     height = window.innerHeight;
@@ -171,6 +171,11 @@ function setup() {
 
     
     objSize = floor(min(floor(width / gameSize), floor(height / gameSize)) * sizeModifier);
+
+    maxVelocityX = objSize/10;
+    maxVelocityY = objSize/10;
+    console.log("OBJ SIZE:"+objSize);
+    console.log("velocity: "+maxVelocityX+":"+maxVelocityY);
     
     columnSize = (width-2*marginH)/nColumns;
     rowSize =(height-2*marginV)/nRows;
@@ -189,8 +194,8 @@ function setup() {
     leaderboardButton = new LeaderboardButton();
     chooselevelButton = new ChooseLevelButton();
 
-    gameBeginning = true;
-
+    stateGame = "gamebeginning";
+    currentLevel = 0;
    
 
 }
@@ -203,13 +208,20 @@ function checkGameOver(){
         if(balloons.length==0){
         if (levelsMap.length>(currentLevel+1)){
             pushMessage("Great! Next level", imgNext, ()=>{
+               
                 currentLevel++;
+                let lastLevel = localStorage.getItem("lastLevel", 0);
+                if (currentLevel>lastLevel){
+                    localStorage.setItem("lastLevel", currentLevel);
+                }
+                
+                
                 loadMap();
             });
         }else{
          
             pushMessage("Congratulations!\n No more levels!", imgNext, ()=>{
-                gameOver = true;
+                stateGame = "gamebeginning";
             });
         
         }
@@ -232,13 +244,20 @@ function checkGameOver(){
 
 function pushMessage(text, img, callback){
     setTimeout(()=>{
-        messageBox.push(new PanelBox(text, width*0.8, height*4/10, callback, img));
+        let wPanel;
+        let hPanel;
+        if(width>height){
+            wPanel = Math.floor(width*0.5);
+        }else{
+            wPanel = Math.floor(width*0.8);
+        }
+        hPanel=Math.floor(wPanel/1.25);
+        messageBox.push(new PanelBox(text, wPanel, hPanel, callback, img));
     }, 1500);
 
 }
 
 function draw() {
-  console.log("DRAW");
     //Draw background or a solid color
     if (imgBackground) {
         background(imgBackground);
@@ -247,7 +266,7 @@ function draw() {
     }
 
     //===Draw UI
-    if (gameOver || gameBeginning) {
+    if (stateGame == "gamebeginning") {
 
         //===Draw title
         let titleText = Koji.config.strings.title;
@@ -314,50 +333,66 @@ function draw() {
 
     } else {
 
-        //Update and render all game objects here
+        if(stateGame =="playing"){
 
-        for (let i = 0; i < balloons.length; i++) {
-            balloons[i].update();
-            balloons[i].render();
+            //Update and render all game objects here
+
+            for (let i = 0; i < balloons.length; i++) {
+                balloons[i].update();
+                balloons[i].render();
+            }
+
+
+
+            for (let i = 0; i < balloonsParticles.length; i++) {
+                balloonsParticles[i].update();
+                balloonsParticles[i].render();
+            }
+
+            //===Update all floating text objects
+            for (let i = 0; i < floatingTexts.length; i++) {
+                floatingTexts[i].update();
+                floatingTexts[i].render();
+            }
+
+            //Update pop Effects
+            //===Update all floating text objects
+            for (let i = 0; i < popEffects.length; i++) {
+                popEffects[i].update();
+                popEffects[i].render();
+            }
+            //Message box
+            for (let i = 0; i < messageBox.length; i++) {
+                messageBox[i].update();
+                messageBox[i].render();
+            }
+
+            
+            //===Score draw
+            let clicksX = width - objSize / 2;
+            let clicksY = objSize / 3;
+            textSize(objSize * 2);
+            fill(Koji.config.colors.scoreColor);
+            textAlign(RIGHT, TOP);
+            text("Moves: "+clicksAvailable, clicksX, clicksY);
+
+            //Level draw
+            
+            
+            textSize(objSize * 2);
+            let textLevel= "Level: "+(currentLevel+1);
+            let widthT = textWidth(textLevel);
+            clicksX = widthT*1.1;
+            clicksY = objSize / 3;
+            fill(Koji.config.colors.scoreColor);
+            text(textLevel, clicksX, clicksY);
+
+            
+            cleanup();
+            checkGameOver();
+        }else{
+            //Choose level....
         }
-
-
-
-        for (let i = 0; i < balloonsParticles.length; i++) {
-            balloonsParticles[i].update();
-            balloonsParticles[i].render();
-        }
-
-        //===Update all floating text objects
-        for (let i = 0; i < floatingTexts.length; i++) {
-            floatingTexts[i].update();
-            floatingTexts[i].render();
-        }
-
-        //Update pop Effects
-         //===Update all floating text objects
-        for (let i = 0; i < popEffects.length; i++) {
-            popEffects[i].update();
-            popEffects[i].render();
-        }
-        //Message box
-        for (let i = 0; i < messageBox.length; i++) {
-            messageBox[i].update();
-            messageBox[i].render();
-        }
-
-        
-        //===Score draw
-        let clicksX = width - objSize / 2;
-        let clicksY = objSize / 3;
-        textSize(objSize * 2);
-        fill(Koji.config.colors.scoreColor);
-        textAlign(RIGHT, TOP);
-        text("Moves: "+clicksAvailable, clicksX, clicksY);
-
-        
-        cleanup();
-        checkGameOver();
 
     }
 
@@ -445,7 +480,7 @@ function touchStarted() {
         return;
     }
 
-    if (!gameOver && !gameBeginning) {
+    if (stateGame=="playing") {
 			console.log("TOuch "+mouseX+": "+mouseY);
         //Ingame
         if (!isClicking){ //Prevent accidental double click
@@ -490,15 +525,13 @@ function touchEnded() {
 //===Call this every time you want to start or reset the game
 //This is a good place to clear all arrays like enemies, bullets etc before starting a new game
 function init() {
-    gameOver = false;
-
+    stateGame = 'playing';
 
     floatingTexts = [];
 
     balloons = [];
     balloonsParticles = [];
 
-    currentLevel = 0;
     messageBox = [];
 
     playMusic();

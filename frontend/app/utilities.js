@@ -271,7 +271,7 @@ class PlayButton {
             this.color = Koji.config.colors.buttonClickColor;
         }
         this.btn.onRelease = function () {
-            gameBeginning = false;
+            stateGame = "playing";
             init();
         }
     }
@@ -323,6 +323,7 @@ class ChooseLevelButton {
         }
         this.btn.onRelease = function () {
             window.setAppView("chooselevel");
+            stateGame = "chooselevel";
            
         }
     }

@@ -23,10 +23,15 @@ class ChooseLevel extends Component {
 
     handleClose = () => {
         window.setAppView("game");
+        stateGame = "gamebeginning";
     }
 
     selectLevel =(level)=>(e)=>{
       console.log("Select level"+level);
+      currentLevel= level;
+      window.setAppView("game");
+      init();
+
     }
 
     handleSubmit = (e) => {
@@ -65,12 +70,7 @@ class ChooseLevel extends Component {
 
     render() {
       console.log("RENDER");
-      for (let i=0;i<37;i++){
-       this.levels.push({'teste': 'teste'});
-      }
-       localStorage.setItem("lastLevel", 8);
-
-
+     
       let nx = Math.floor((width-84)/85);
       let ny = Math.floor((height*0.65)/85);
       let levelPerBoard = nx*ny;
@@ -105,10 +105,10 @@ class ChooseLevel extends Component {
                                 levelBoard.map((level, index)=>{
                                   return (indexBoard*levelPerBoard+index)<=lastLevel?
                                    (<div class="panelLevel" onClick={this.selectLevel(indexBoard*levelPerBoard+index)}>
-                                    {indexBoard*levelPerBoard+index}
+                                    {indexBoard*levelPerBoard+index+1}
                                   </div>):  (<div class="panelLevel locked">
                                      <img src={Koji.config.images.lock} style="width: 20px; height:20px;"></img>
-                                     <span style="position: absolute; margin-top: 20px">{indexBoard*levelPerBoard+index}</span>
+                                     <span >{indexBoard*levelPerBoard+index+1}</span>
                                   </div>);
                                 })
                             
